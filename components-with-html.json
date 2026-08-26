@@ -1,0 +1,67 @@
+[
+  {
+    "code": "I-01",
+    "title": "Editorial intro (lead paragraph + drop cap)",
+    "section": "I",
+    "looks_like": "A standalone body paragraph with an oversized 48px drop-cap on the first letter.",
+    "use_for": [
+      "Open an EDM with a personal note from a product owner, RM, or campaign lead.",
+      "Anchor a story-driven campaign that needs context before any offer or list.",
+      "Bridge from hero to body when the brief is more letter than promo."
+    ],
+    "thumbnail_url": "/static/component-thumbs/I-01.png",
+    "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n            <tr>\n              <td style=\"padding:24px 32px 24px;\">\n                <p style=\"margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:16px;color:#1E3A6B;line-height:1.6;\">\n                  <span style=\"float:left;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:48px;line-height:0.9;font-weight:700;color:#072447;padding:6px 10px 0 0;\">A</span>\n                  few times a year, we ship an EDM that has to do real work — explain a benefit, change behaviour, move money. This is the inventory you reach for when the brief lands at 4pm and ships at 9am.\n                </p>\n              </td>\n            </tr>\n          </table>"
+  },
+  {
+    "code": "I-02",
+    "title": "Section divider (eyebrow + rule line)",
+    "section": "I",
+    "looks_like": "A short uppercase eyebrow with a thick clay tick on the left and a hairline rule on the right.",
+    "use_for": [
+      "Break a long EDM into named chapters (\"The offer\", \"How it works\").",
+      "Add structure to hybrid EDMs that mix promo and transactional sections.",
+      "Quietly signal a topic change without a full chapter break."
+    ],
+    "thumbnail_url": "/static/component-thumbs/I-02.png",
+    "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n            <tr>\n              <td style=\"padding:24px 32px 8px;\">\n                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n                  <tr>\n                    <td width=\"40\" style=\"padding:0;vertical-align:middle;\">\n                      <div style=\"height:2px;background:#1E5BB8;width:32px;\"></div>\n                    </td>\n                    <td style=\"padding:0 12px;vertical-align:middle;\">\n                      <p style=\"margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:700;color:#1E5BB8;letter-spacing:0.18em;text-transform:uppercase;\">The offer</p>\n                    </td>\n                    <td style=\"padding:0;vertical-align:middle;\">\n                      <div style=\"height:1px;background:#D8E0EC;width:100%;\"></div>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n            </tr>\n          </table>"
+  },
+  {
+    "code": "I-03",
+    "title": "Big offer headline (oversized number)",
+    "section": "I",
+    "looks_like": "An 84px bold number (e.g. \"5×\") with a clay-blue uppercase eyebrow above and a one-line qualifier below.",
+    "use_for": [
+      "Card-spend campaigns where the multiplier is the pitch.",
+      "Savings-rate launches (\"4.50% p.a.\") and discount campaigns.",
+      "Any moment one number can carry the whole message."
+    ],
+    "thumbnail_url": "/static/component-thumbs/I-03.png",
+    "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n            <tr>\n              <td style=\"padding:32px 32px 8px;text-align:center;\">\n                <p style=\"margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#1E5BB8;letter-spacing:0.12em;text-transform:uppercase;\">Travel spend bonus</p>\n                <p style=\"margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:84px;font-weight:800;color:#072447;line-height:1;letter-spacing:-0.04em;\">5x</p>\n                <p style=\"margin:8px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:18px;font-weight:600;color:#003D7E;line-height:1.3;\">Skywards Miles on travel booked through August.</p>\n                <p style=\"margin:6px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;\">Skywards Infinite &amp; Signature cardholders. Min spend AED 5,000.</p>\n              </td>\n            </tr>\n          </table>"
+  },
+  {
+    "code": "I-04",
+    "title": "Primary CTA button (solid, on white)",
+    "section": "I",
+    "looks_like": "A centered solid navy button (#072447 bg, white text, 6px radius) with 14px vertical padding.",
+    "use_for": [
+      "The single most important action on a promotional EDM.",
+      "Below an offer headline or hero subhead — first chance to click.",
+      "Anywhere \"Apply now\", \"Register\", \"Book\", or \"Activate\" leads."
+    ],
+    "thumbnail_url": "/static/component-thumbs/I-04.png",
+    "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n            <tr>\n              <td style=\"padding:16px 32px 32px;text-align:center;\">\n                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\">\n                  <tr>\n                    <td style=\"background:#072447;border-radius:6px;padding:14px 32px;\">\n                      <a href=\"https://www.emiratesnbd.com/summer-travel\" style=\"color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;text-decoration:none;letter-spacing:0.01em;\">Register your card →</a>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n            </tr>\n          </table>"
+  },
+  {
+    "code": "I-05",
+    "title": "Spend-and-earn mechanic (3-step ladder)",
+    "section": "I",
+    "looks_like": "Three equal-width soft-bg tiles in a row, each with a \"Step N\" label and a one-line action.",
+    "use_for": [
+      "Card-spend mechanics (\"Spend → Earn → Fly\").",
+      "Multi-step campaign flows (\"Apply → Activate → Use\").",
+      "Whenever the offer requires three sequential customer actions."
+    ],
+    "thumbnail_url": "/static/component-thumbs/I-05.png",
+    "html": "<table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n            <tr>\n              <td style=\"padding:8px 32px 32px;\">\n                <table role=\"presentation\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">\n                  <tr>\n                    <td width=\"33%\" style=\"padding:18px 8px;background:#F5F7FA;border-radius:8px;text-align:center;vertical-align:top;\">\n                      <p style=\"margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;font-weight:600;color:#8A95A8;letter-spacing:0.1em;text-transform:uppercase;\">Step 1</p>\n                      <p style=\"margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:22px;font-weight:700;color:#072447;line-height:1.1;\">Spend AED 5,000</p>\n                      <p style=\"margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#4A5A78;line-height:1.45;\">on travel between 1 Jun – 31 Aug.</p>\n                    </td>\n                    <td width=\"2%\"></td>\n                    <td width=\"33%\" style=\"padding:18px 8px;background:#F5F7FA;border-radius:8px;text-align:center;vertical-align:top;\">\n                      <p style=\"margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;font-weight:600;color:#8A95A8;letter-spacing:0.1em;text-transform:uppercase;\">Step 2</p>\n                      <p style=\"margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:22px;font-weight:700;color:#072447;line-height:1.1;\">Earn 5x miles</p>\n                      <p style=\"margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#4A5A78;line-height:1.45;\">on every dirham spent.</p>\n                    </td>\n                    <td width=\"2%\"></td>\n                    <td width=\"33%\" style=\"padding:18px 8px;background:#F5F7FA;border-radius:8px;text-align:center;vertical-align:top;\">\n                      <p style=\"margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;font-weight:600;color:#8A95A8;letter-spacing:0.1em;text-transform:uppercase;\">Step 3</p>\n                      <p style=\"margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:22px;font-weight:700;color:#072447;line-height:1.1;\">Fly on us</p>\n                      <p style=\"margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#4A5A78;line-height:1.45;\">redeem for any Emirates flight.</p>\n                    </td>\n                  </tr>\n                </table>\n              </td>\n            </tr>\n          </table>"
+  }
+]
