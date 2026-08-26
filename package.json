@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "generate:images": "node lib-images/generate-image-catalog.mjs",
+    "generate:product-images": "node product-images/generate-product-image-catalog.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
