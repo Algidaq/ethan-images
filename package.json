@@ -6,6 +6,8 @@
   "scripts": {
     "generate:images": "node lib-images/generate-image-catalog.mjs",
     "generate:product-images": "node product-images/generate-product-image-catalog.mjs",
+    "generate:edm-agnostic": "node edm-components/generate-agnostic-components.mjs",
+    "generate:edm-gallery": "pnpm generate:edm-agnostic && node edm-components/generate-all-components-html.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
