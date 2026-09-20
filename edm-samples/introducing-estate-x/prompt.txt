@@ -1,0 +1,47 @@
+Brief
+Could you please assist with the below request and create the EDM accordingly.
+ find the copy below:
+ 
+Dear Colleagues,
+ 
+We are pleased to introduce Estate X, a real estate intelligence platform that provides a centralized view of Dubai real estate market activity.
+Designed for Wholesale Banking users, Estate X enables users to analyze market trends, demand patterns, pricing movements, and location-level insights through interactive dashboards and visualizations.
+ 
+ 
+KEY FEATURES
+ 
+Market View
+A comprehensive view of UAE real estate market performance, including transaction activity, sales values, and key market indicators.
+ 
+image001.png
+ 
+Demand Insights
+Track buyer and investor activity across locations, communities, and property types to identify demand trends and emerging opportunities.
+ 
+image002.png
+ 
+Pricing Analytics
+Monitor sales and rental price trends, benchmark communities, and compare market performance across locations.
+ 
+image003.png
+ 
+Supply Pipeline
+Coming Soon
+Visibility into upcoming project launches, inventory trends, and future development pipelines across key markets.
+ 
+Handover Insights
+Coming Soon
+Track upcoming project completions and handovers to better understand future market supply dynamics.
+Wizard answers
+tone	confident & celebratory
+density	standard
+segment	CIB
+hero_type	standard
+ar_variant	none
+footer_type	internal
+header_type	single
+use_library	off
+hero_image_query	dashboard analytics charts
+name_placeholder	Dear [First Name]
+User notes
+please include the images as mentioned in the brief

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Your auto loan, now in the app · Ethan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round" rel="stylesheet"/>
+<style>
+    
+:root {
+  --bg: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --ink: #072447;
+  --ink-soft: #1E3A6B;
+  --ink-muted: #4A5A78;
+  --line: #D8E0EC;
+  --clay: #1E5BB8;
+  --clay-deep: #003D7E;
+  --clay-soft: #ABC4E2;
+  --moss: #0E8A5F;
+  --serif: 'Plus Jakarta Sans', Arial, sans-serif;
+  --sans:  'Plus Jakarta Sans', Arial, sans-serif;
+}
+body { margin: 0; padding: 0; background: #f0f0f0; font-family: var(--sans); color: var(--ink); }
+.edm-canvas { width: 600px; max-width: 100%; margin: 0 auto; background: #ffffff; }
+.edm-canvas img { display: block; max-width: 100%; height: auto; border: 0; }
+.edm-canvas a { color: var(--clay); text-decoration: none; }
+
+/* Hero image box: locked aspect (600×340 cover-crop) by default. The
+   surrounding <td> is position:relative so the sail overlay can sit
+   absolutely on top. To free the aspect ratio, the editor flips the
+   <td>'s data-aspect attribute to "free" which the styles below honor. */
+.edm-canvas .edm-hero-img-cell { position: relative; padding: 0; overflow: hidden; }
+/* Default + named aspects. All cover-crop the image to fill the box;
+   the cell's height follows the img. Editor flips data-aspect to swap. */
+.edm-canvas .edm-hero-img-cell > img {
+  display: block; max-width: 100%; border: 0;
+  object-fit: cover; object-position: center;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="locked"] > img {
+  width: 600px; height: 340px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="square"] > img {
+  width: 600px; height: 600px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="16-9"] > img {
+  width: 600px; height: 338px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="4-3"] > img {
+  width: 600px; height: 450px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="9-16"] > img {
+  width: 600px; height: 1067px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="free"] > img {
+  width: 100%; max-width: 600px; height: auto; object-fit: initial;
+}
+/* CSS sail overlay: a brand-mark layer painted on top of the hero
+   image. The PNG sits at /static/brand/edm-sail-{en,ar}.png. The
+   overlay div carries data-sail-lang so the right asset is picked.
+   Hidden when the parent cell has data-sail="off" or data-sail="embedded"
+   (the latter means the sail is baked into the image src itself). */
+.edm-canvas .edm-sail-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  /* Match the sail to the hero image box EXACTLY — both width and height —
+     so the overlay looks identical to the baked embed (sail_composite resizes
+     the sail to the hero's pixel dims). 100% 100% maps the sail corner-to-corner
+     onto the image; `cover` would crop it. Applies at every aspect (incl. free). */
+  background-repeat: no-repeat; background-position: center; background-size: 100% 100%;
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="en"] {
+  background-image: url(images/img-16.png);
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="ar"] {
+  background-image: url(images/img-17.png);
+}
+.edm-canvas .edm-hero-img-cell[data-sail="off"] .edm-sail-overlay,
+.edm-canvas .edm-hero-img-cell[data-sail="embedded"] .edm-sail-overlay {
+  display: none;
+}
+/* Mobile responsive fit — let inner tables shrink below 600px,
+   tighten 32px gutters down to 18px, allow text to wrap. Breakpoint
+   sits BELOW 600px so the editor's 600-wide preview iframe doesn't
+   accidentally trip it. Real phones (375-414px) still hit it. */
+@media (max-width: 540px) {
+  .edm-canvas { width: 100% !important; }
+  .edm-canvas table { width: 100% !important; }
+  .edm-canvas td { padding-left: 18px !important; padding-right: 18px !important; }
+  .edm-canvas h1 { font-size: 26px !important; line-height: 1.2 !important; }
+  .edm-canvas h2 { font-size: 20px !important; }
+  /* Headers / footers with their own bleed cells get less aggressive trim */
+  .edm-canvas .edm-footer td,
+  .edm-canvas .edm-hero img { padding-left: 0 !important; padding-right: 0 !important; }
+}
+
+/* Material Icons — usable anywhere in the EDM body via
+   <span class="material-icons-outlined">trending_up</span>
+   Sizes default to 24px; override with .icon-sm/.md/.lg/.xl. */
+.material-icons,
+.material-icons-outlined,
+.material-icons-round { font-size: 24px; line-height: 1; vertical-align: middle; color: var(--ink); }
+.material-icons.icon-sm,
+.material-icons-outlined.icon-sm,
+.material-icons-round.icon-sm { font-size: 16px; }
+.material-icons.icon-md,
+.material-icons-outlined.icon-md,
+.material-icons-round.icon-md { font-size: 20px; }
+.material-icons.icon-lg,
+.material-icons-outlined.icon-lg,
+.material-icons-round.icon-lg { font-size: 32px; }
+.material-icons.icon-xl,
+.material-icons-outlined.icon-xl,
+.material-icons-round.icon-xl { font-size: 48px; }
+.icon-clay { color: var(--clay) !important; }
+.icon-clay-deep { color: var(--clay-deep) !important; }
+.icon-muted { color: var(--ink-muted) !important; }
+.icon-white { color: #FFFFFF !important; }
+.icon-moss { color: var(--moss) !important; }
+
+/* Channel meta strip — internal-only, never in the deliverable */
+.edm-meta {
+  width: 600px; max-width: 100%; margin: 0 auto 12px;
+  background: #EEF1F5; border-left: 3px solid #072447;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  color: #1E3A6B; font-size: 13px; line-height: 1.45;
+}
+.edm-meta[data-meta-visible="false"] { display: none; }
+.edm-meta-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px 8px; border-bottom: 1px solid #D8E0EC;
+}
+.edm-meta-head .edm-meta-title {
+  font-size: 11px; font-weight: 700; color: #072447;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-head .edm-meta-tag {
+  font-size: 10px; font-weight: 600; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-rows { padding: 8px 14px 12px; }
+.edm-meta-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 6px 0; border-bottom: 1px dashed #D8E0EC;
+}
+.edm-meta-row:last-child { border-bottom: 0; }
+.edm-meta-label {
+  flex: 0 0 96px; font-size: 11px; font-weight: 600; color: #4A5A78;
+  text-transform: uppercase; letter-spacing: 0.06em; padding-top: 2px;
+}
+.edm-meta-value {
+  flex: 1 1 auto; font-size: 13px; color: #072447;
+  outline: none; min-height: 18px; word-break: break-word;
+}
+.edm-meta-value[data-meta-field="subject"],
+.edm-meta-value[data-meta-field="push_title"] { font-weight: 600; }
+.edm-meta-value:empty:before {
+  content: attr(data-placeholder); color: #B0BACB; font-style: italic;
+}
+.edm-meta-count {
+  flex: 0 0 auto; font-size: 11px; color: #8A95A8;
+  font-variant-numeric: tabular-nums; padding-top: 3px;
+}
+.edm-meta-count.over { color: #DC2626; font-weight: 600; }
+.edm-meta-push { display: flex; gap: 10px; flex: 1 1 auto; }
+.edm-meta-push .edm-meta-push-col { flex: 1 1 0; }
+.edm-meta-push-col-label {
+  font-size: 9px; font-weight: 700; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 2px;
+}
+
+  </style>
+</head>
+<body>
+<div class="edm-meta" data-edm-meta="" data-meta-visible="true">
+</div>
+<div class="edm-canvas" id="edm">
+<table border="0" cellpadding="0" cellspacing="0" class="edm-header" role="presentation" style="background:#FFFFFF;" width="100%">
+<tbody><tr>
+<td align="left" class="" style="padding:14px 32px 0;vertical-align:top;white-space:nowrap;" width="50%">
+<span style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.3;">
+<span style="font-size:12px;vertical-align:-1px;">🔒</span>  CIF: [Field: Customer CIF - Masked]
+      </span>
+</td>
+<td align="right" class="" dir="rtl" style="padding:14px 32px 0;vertical-align:top;" width="50%">
+<span class="" style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.3;">
+        للاطلاع على النسخة العربية، <a href="/e/your-auto-loan-now-in-the-app-ar" style="color:#4A5A78;text-decoration:underline;font-weight:700;">يُرجى الضغط هنا</a>
+</span>
+</td>
+</tr>
+<tr>
+<td align="left" class="" colspan="2" style="padding:18px 32px 22px;">
+<img alt="Emirates NBD" height="52" src="images/img-01.svg" style="display: block; height: 52px; width: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel"/>
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-hero" role="presentation" width="100%">
+<tbody><tr>
+<td class="edm-hero-img-cell" data-aspect="locked" data-sail="overlay" style="padding:0;height:340px;overflow:hidden;position:relative;">
+<img alt="Your car loan, in your pocket." class="" height="340" src="images/img-02.jpg" style="width: 600px; height: 340px; object-fit: cover; object-position: center center; display: block; max-width: 100%; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="600"/>
+<div class="edm-sail-overlay" data-edm-sail="" data-sail-lang="en"></div>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:32px 32px 12px;background:#FFFFFF;">
+<p class="" style="margin:0 0 12px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#1E5BB8;letter-spacing:0.12em;text-transform:uppercase;">ENBD X · NOW available for AUTO LOAN CUSTOMERS</p>
+<h1 class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:32px;font-weight:600;color:#072447;line-height:1.18;letter-spacing:-0.015em;">Your car loan, in your pocket.</h1>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:0 32px 8px;background:#FFFFFF;">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">Dear [First Name] [Last Name],</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:8px 32px 20px;background:#FFFFFF;">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">You can now register and log in on the ENBD X mobile app for an easier way to track your next instalment, check your balance, and stay on top of your loan — anytime, from anywhere. It only takes a few minutes to set up, download the app and register to get started.</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:0 32px 28px;background:#FFFFFF;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr>
+<td style="background:#072447;border-radius:6px;padding:0;"><a class="" href="https://www.emiratesnbd.com/en/r/?a=dFv6gZNo" style="display:inline-block;padding:11px 22px;color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">Download the app →</a></td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-body" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:0;background:#FFFFFF;">
+<!--BODY_START-->
+<!-- MODULE 1: App download row -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr></tr>
+</tbody></table>
+<!-- MODULE 2: Feature highlights — 2x2 screenshot grid -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:8px 32px 24px;">
+<p class="" style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;">Everything, at a glance</p>
+<h2 class="" style="margin:0 0 20px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;color:#072447;">Your loan, clearly laid out.</h2>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td class="" style="padding:0 8px 16px 0;" valign="top" width="50%">
+<img alt="Next instalment date" class="" height="180" src="images/img-03.png" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">Next instalment date</p>
+<p class="" style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">Know exactly when your next payment is due.</p>
+</td>
+<td class="" style="padding:0 0 16px 8px;" valign="top" width="50%">
+<img alt="Instalment amount" class="" height="180" src="images/img-04.jpg" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">Instalment amount</p>
+<p class="" style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">See what's due, down to the dirham.</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:0 8px 0 0;" valign="top" width="50%">
+<img alt="Maturity date" class="" height="180" src="images/img-05.png" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">Maturity date</p>
+<p style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">Track when your loan is fully paid off.</p>
+</td>
+<td class="" style="padding:0 0 0 8px;" valign="top" width="50%">
+<img alt="Paid instalments" class="" height="180" src="images/img-06.png" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">Paid instalments</p>
+<p class="" style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">Follow your progress, payment by payment.</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 3: How it works — register in 3 steps -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F7FA;" width="100%">
+<tbody><tr><td class="" style="padding:32px;">
+<p class="" style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;">Set up in 3 steps</p>
+<h2 class="" style="margin:0 0 20px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;color:#072447;">Register in a few minutes.</h2>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td valign="top" width="36"><table border="0" cellpadding="0" cellspacing="0" role="presentation"><tbody><tr><td align="center" height="28" style="background:#072447;border-radius:14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;" valign="middle" width="28">1</td></tr></tbody></table></td>
+<td class="" style="padding:0 0 16px 8px;" valign="top">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;font-weight:600;color:#072447;">Download ENBD X</p>
+<p class="" style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">Available on App Store, Google Play and AppGallery.</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="36"><table border="0" cellpadding="0" cellspacing="0" role="presentation"><tbody><tr><td align="center" height="28" style="background:#072447;border-radius:14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;" valign="middle" width="28">2</td></tr></tbody></table></td>
+<td class="" style="padding:0 0 16px 8px;" valign="top">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;font-weight:600;color:#072447;">Register your details</p>
+<p class="" style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">Verify your identity and set up secure login.</p>
+</td>
+</tr>
+<tr>
+<td valign="top" width="36"><table border="0" cellpadding="0" cellspacing="0" role="presentation"><tbody><tr><td align="center" height="28" style="background:#072447;border-radius:14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;" valign="middle" width="28">3</td></tr></tbody></table></td>
+<td class="" style="padding:0 0 0 8px;" valign="top">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;font-weight:600;color:#072447;">Log in and take control</p>
+<p class="" style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">Your auto loan, front and centre.</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 4: Benefits for auto loan holders — checklist -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:32px 32px 24px;">
+<p class="" style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;">Why register</p>
+<h2 class="" style="margin:0 0 18px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;color:#072447;">More control, less guesswork.</h2>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;padding-left:8px;">Check your loan balance anytime, anywhere</span></td></tr>
+<tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;padding-left:8px;">Never miss an instalment date</span></td></tr>
+<tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;padding-left:8px;">See your maturity date and payment progress</span></td></tr>
+<tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;padding-left:8px;">Secure, encrypted access on your own device</span></td></tr>
+<tr><td class="" style="padding:0;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;padding-left:8px;">Stay tuned for more upgrades and benefits</span></td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 5: Final CTA band -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td style="padding:0;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#072447;" width="100%">
+<tbody><tr></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!--BODY_END-->
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-hero" dir="rtl" role="presentation" width="100%">
+<tbody><tr>
+<td class="edm-hero-img-cell" data-aspect="locked" data-sail="overlay" style="padding:0;height:340px;overflow:hidden;position:relative;">
+<img alt="قرض السيارة، في متناول يدك." class="" height="340" src="images/img-02.jpg" style="width: 600px; height: 340px; object-fit: cover; object-position: center center; display: block; max-width: 100%; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="600"/>
+<div class="edm-sail-overlay" data-edm-sail="" data-sail-lang="ar"></div>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:32px 32px 12px;background:#FFFFFF;">
+<p class="" style="margin:0 0 12px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#1E5BB8;letter-spacing:0.12em;text-transform:uppercase;">ENBD X · متاح الآن لعملاء قروض السيارات</p>
+<h1 class="" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:32px;font-weight:600;color:#072447;line-height:1.18;letter-spacing:-0.015em;">قرض السيارة، في متناول يدك.</h1>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:0 32px 8px;background:#FFFFFF;">
+<p class="" dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;text-align:right;">عزيزي [الاسم الأول] [اسم العائلة]،</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:8px 32px 20px;background:#FFFFFF;">
+<p class="" dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;text-align:right;">يمكنك الآن التسجيل والدخول إلى تطبيق ENBD X على الهاتف المتحرك للاستمتاع بطريقة أسهل لتتبع قسط القرض القادم والاطلاع على الرصيد والبقاء على اطلاع دائم بتفاصيل قرضك، وقتما تشاء ومن أي مكان. يتطلب التسجيل بضع دقائق فقط. حمّل التطبيق الآن واشترك للبدء.</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:0 32px 28px;background:#FFFFFF;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr>
+<td style="background:#072447;border-radius:6px;padding:0;"><a href="https://www.emiratesnbd.com/en/r/?a=dFv6gZNo" style="display:inline-block;padding:11px 22px;color:#FFFFFF;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.02em;direction:rtl;">حمّل التطبيق ←</a></td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table><table border="0" cellpadding="0" cellspacing="0" class="edm-body" dir="rtl" role="presentation" width="100%"><tbody><tr><td style="padding:0;background:#FFFFFF;"><!--BODY_AR_START-->
+<!-- MODULE 1: App download row -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr></tr>
+</tbody></table>
+<!-- MODULE 2: Feature highlights — 2x2 screenshot grid -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:8px 32px 24px;text-align:right;">
+<p class="" style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;">كل شيء، بلمحة سريعة</p>
+<h2 class="" style="margin:0 0 20px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;color:#072447;">قرضك موضح بوضوح.</h2>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td class="" style="padding:0 0 16px 8px;" valign="top" width="50%">
+<img alt="تاريخ القسط التالي" class="" height="180" src="images/img-03.png" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">تاريخ القسط التالي</p>
+<p class="" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">اعرف بدقة متى موعد دفعتك القادمة.</p>
+</td>
+<td class="" style="padding:0 8px 16px 0;" valign="top" width="50%">
+<img alt="مبلغ القسط" class="" height="180" src="images/img-04.jpg" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">مبلغ القسط</p>
+<p class="" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">اطّلع على المبلغ المستحق بدقة الدرهم.</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:0 0 0 8px;" valign="top" width="50%">
+<img alt="تاريخ الاستحقاق" class="" height="180" src="images/img-05.png" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">تاريخ الاستحقاق</p>
+<p style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">تتبّع الموعد الذي يكون قرضك مسددًا بالكامل.</p>
+</td>
+<td class="" style="padding:0 8px 0 0;" valign="top" width="50%">
+<img alt="الأقساط المسددة" class="" height="180" src="images/img-06.png" style="width: 100%; max-width: 252px; height: 180px; object-fit: cover; object-position: center center; display: block; border-radius: 6px; cursor: pointer;" title="Click to replace · open image panel" width="252"/>
+<p class="" style="margin:10px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#072447;">الأقساط المسددة</p>
+<p class="" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">تابع تقدمك دفعة تلو الأخرى.</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 3: How it works — register in 3 steps -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" style="background:#F5F7FA;" width="100%">
+<tbody><tr><td dir="rtl" style="padding:32px;">
+<p style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;">التسجيل في 3 خطوات</p>
+<h2 style="margin:0 0 20px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;color:#072447;">تسجيل سريع في دقائق معدودة.</h2>
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:0 0 16px 8px;" valign="top" width="28">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation"><tbody><tr><td align="center" height="28" style="background:#072447;border-radius:14px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;" valign="middle" width="28">1</td></tr></tbody></table>
+</td>
+<td style="padding:0 0 16px 0;" valign="top">
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;font-weight:600;color:#072447;">تحميل تطبيق ENBD X</p>
+<p style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">متوفر على متجر التطبيقات و Google Play و AppGallery.</p>
+</td>
+</tr>
+<tr>
+<td style="padding:0 0 16px 8px;" valign="top" width="28">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation"><tbody><tr><td align="center" height="28" style="background:#072447;border-radius:14px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;" valign="middle" width="28">2</td></tr></tbody></table>
+</td>
+<td style="padding:0 0 16px 0;" valign="top">
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;font-weight:600;color:#072447;">سجّل بيانات ملفك</p>
+<p style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">تحقق من هويتك وقم بإعداد تسجيل دخول آمن.</p>
+</td>
+</tr>
+<tr>
+<td style="padding:0 0 0 8px;" valign="top" width="28">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation"><tbody><tr><td align="center" height="28" style="background:#072447;border-radius:14px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#FFFFFF;" valign="middle" width="28">3</td></tr></tbody></table>
+</td>
+<td style="padding:0;" valign="top">
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;font-weight:600;color:#072447;">سجّل الدخول وتحكم بالقرض</p>
+<p style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.4;">قرضك العقاري في المقدمة.</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 4: Benefits for auto loan holders — checklist -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:32px 32px 24px;">
+<p class="" style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;">لماذا تسجل</p>
+<h2 class="" style="margin:0 0 18px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:24px;font-weight:600;letter-spacing:-0.01em;color:#072447;">تحكم أفضل، توقعات أدق.</h2>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#072447;padding-right:8px;">تحقق من رصيد قرضك في أي وقت وأي مكان</span></td></tr>
+<tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#072447;padding-right:8px;">لا تفوّت أي تاريخ استحقاق قسط</span></td></tr>
+<tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#072447;padding-right:8px;">اطّلع على تاريخ الاستحقاق وتقدم الدفع</span></td></tr>
+<tr><td class="" style="padding:0 0 12px;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#072447;padding-right:8px;">وصول آمن ومشفر على جهازك الخاص</span></td></tr>
+<tr><td class="" style="padding:0;"><span class="material-icons-outlined icon-sm icon-moss" style="color:#0E8A5F;vertical-align:middle;">check_circle</span><span class="" style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#072447;padding-right:8px;">ترقبّ مزيدًا من الترقيات والمزايا القادمة</span></td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 5: Final CTA band -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td style="padding:0;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#072447;" width="100%">
+<tbody><tr></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!--BODY_AR_END--></td></tr></tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-footer" role="presentation" style="background:#FFFFFF;" width="100%">
+<!-- Be aware! Security warning (EN) -->
+<tbody><tr>
+<td style="padding:0;background:#F0F2F5;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td class="" style="padding:28px 32px 12px;vertical-align:top;" width="80%">
+<p style="margin:0 0 8px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:18px;font-weight:700;color:#072447;line-height:1.25;">Be aware!</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#1E3A6B;line-height:1.55;">In our emails, we will never ask you for confidential information or to confirm any security details such as user IDs, passwords or PINs. If you believe you received a fraudulent email, please <a href="https://www.emiratesnbd.com/report-fraud" style="color:#072447;text-decoration:underline;font-weight:600;">click here</a>.</p>
+</td>
+<td class="" style="padding:28px 32px 12px;vertical-align:top;text-align:right;" width="20%">
+<img alt="" class="" src="images/img-07.svg" style="display: inline-block; width: 64px; height: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="64"/>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<!-- Be aware! AR -->
+<tr>
+<td style="padding:0;background:#F0F2F5;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:12px 32px 28px;vertical-align:top;" width="20%">
+<img alt="" src="images/img-07.svg" style="display: inline-block; width: 64px; height: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="64"/>
+</td>
+<td dir="rtl" style="padding:12px 32px 28px;vertical-align:top;text-align:right;" width="80%">
+<p style="margin:0 0 8px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:18px;font-weight:700;color:#072447;line-height:1.25;">انتبه!</p>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#1E3A6B;line-height:1.75;">في رسائلنا الإلكترونية، لن نطلب منك مطلقاً أي معلومات سرية أو أن تؤكد أي بيانات أمنية، مثل اسم المستخدم أو كلمات المرور أو رقم التعريف الشخصي (PIN). إذا كنت تعتقد أنك قد استلمت بريداً إلكترونياً احتيالياً، فيرجى <a href="https://www.emiratesnbd.com/report-fraud" style="color:#072447;text-decoration:underline;font-weight:700;">الضغط هنا</a>.</p>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<!-- Navy band starts: social row -->
+<!-- Brand-grade social SVGs at /static/brand/social/*.svg. White on
+       transparent, hand-crafted for visual uniformity (filled circles
+       with brand glyph centered). Email-client safe — pure raster. -->
+<tr>
+<td style="padding:20px 32px 14px;background:#072447;text-align:center;">
+<a href="https://facebook.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Facebook" height="36" src="images/img-08.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel"/>
+</a>
+<a href="https://instagram.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Instagram" height="36" src="images/img-09.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel"/>
+</a>
+<a href="https://twitter.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="X" height="36" src="images/img-10.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel"/>
+</a>
+<a href="https://linkedin.com/company/emirates-nbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="LinkedIn" height="36" src="images/img-11.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel"/>
+</a>
+<a href="https://youtube.com/@emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="YouTube" height="36" src="images/img-12.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel"/>
+</a>
+<a href="https://snapchat.com/add/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Snapchat" height="36" src="images/img-13.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel"/>
+</a>
+</td>
+</tr>
+<!-- Hairline divider -->
+<tr>
+<td style="padding:0 32px;background:#072447;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%"><tbody><tr><td style="border-top:1px solid rgba(255,255,255,0.18);font-size:0;line-height:0;"> </td></tr></tbody></table>
+</td>
+</tr>
+<!-- Callouts row: Key Facts + secondary slot -->
+<tr>
+<td style="padding:24px 32px;background:#072447;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td align="center" style="vertical-align:middle;text-align:center;" width="50%">
+<a href="https://www.emiratesnbd.com/en/key-facts" style="text-decoration:none;color:#FFFFFF;display:inline-block;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr>
+<td style="vertical-align:middle;padding-right:12px;">
+<img alt="" height="36" src="images/img-14.svg" style="display: block; height: 36px; width: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel"/>
+</td>
+<td style="vertical-align:middle;text-align:left;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;line-height:1.2;">Key Facts Statement</p>
+<p dir="rtl" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.2;">بيان الحقائق الرئيسية</p>
+</td>
+</tr>
+</tbody></table>
+</a>
+</td>
+<td align="center" style="vertical-align:middle;text-align:center;" width="50%">
+<a href="https://apps.apple.com/app/emirates-nbd" style="text-decoration:none;color:#FFFFFF;display:inline-block;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr>
+<td style="vertical-align:middle;padding-right:12px;">
+<img alt="" height="36" src="images/img-15.svg" style="display: block; height: 36px; width: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel"/>
+</td>
+<td style="vertical-align:middle;text-align:left;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;line-height:1.2;">Mobile Banking App</p>
+<p dir="rtl" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.2;">تطبيق الخدمات المصرفية</p>
+</td>
+</tr>
+</tbody></table>
+</a>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<!-- Marketing opt-out (EN + AR), still on navy -->
+<tr>
+<td style="padding:24px 32px 32px;background:#072447;text-align:center;">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.55;">
+        If you want to opt in or out of our marketing communications, please visit <a href="https://www.emiratesnbd.com/commspreference" style="color:#FFFFFF;text-decoration:underline;font-weight:600;">emiratesnbd.com/commspreference</a>.
+      </p>
+<p dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.85;">
+        إذا كنت ترغب في الاشتراك أو إلغاء الاشتراك في الرسائل التسويقية، يرجى زيارة <a href="https://www.emiratesnbd.com/commspreference-ar" style="color:#FFFFFF;text-decoration:underline;font-weight:700;">emiratesnbd.com/commspreference-ar</a>.
+      </p>
+</td>
+</tr>
+<!-- Copyright — OUT of the navy band, on white -->
+<tr>
+<td style="padding:24px 32px 28px;background:#FFFFFF;text-align:center;">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.55;">
+        Copyright © 2026. Emirates NBD Bank (P.J.S.C.) is licensed by the Central Bank of the UAE.
+      </p>
+<p dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.75;">
+        حقوق النشر محفوظة © 2026. بنك الإمارات دبي الوطني (ش.م.ع.) هو بنك مرخّص من قبل مصرف الإمارات العربية المتحدة المركزي.
+      </p>
+</td>
+</tr>
+</tbody></table>
+</div>
+</body>
+</html>

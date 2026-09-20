@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html data-segment="CIB" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Introducing Estate X · Ethan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round" rel="stylesheet"/>
+<style>
+    
+:root {
+  --bg: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --ink: #020A13;
+  --ink-soft: #1E3A6B;
+  --ink-muted: #4A5A78;
+  --line: #D8E0EC;
+  --clay: #1E5BB8;
+  --clay-deep: #003D7E;
+  --clay-soft: #ABC4E2;
+  --moss: #0E8A5F;
+  --serif: 'Plus Jakarta Sans', Arial, sans-serif;
+  --sans:  'Plus Jakarta Sans', Arial, sans-serif;
+}
+body { margin: 0; padding: 0; background: #f0f0f0; font-family: var(--sans); color: var(--ink); }
+.edm-canvas { width: 600px; max-width: 100%; margin: 0 auto; background: #ffffff; }
+.edm-canvas img { display: block; max-width: 100%; height: auto; border: 0; }
+.edm-canvas a { color: var(--clay); text-decoration: none; }
+
+/* Hero image box: locked aspect (600×340 cover-crop) by default. The
+   surrounding <td> is position:relative so the sail overlay can sit
+   absolutely on top. To free the aspect ratio, the editor flips the
+   <td>'s data-aspect attribute to "free" which the styles below honor. */
+.edm-canvas .edm-hero-img-cell { position: relative; padding: 0; overflow: hidden; }
+/* Default + named aspects. All cover-crop the image to fill the box;
+   the cell's height follows the img. Editor flips data-aspect to swap. */
+.edm-canvas .edm-hero-img-cell > img {
+  display: block; max-width: 100%; border: 0;
+  object-fit: cover; object-position: center;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="locked"] > img {
+  width: 600px; height: 340px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="square"] > img {
+  width: 600px; height: 600px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="16-9"] > img {
+  width: 600px; height: 338px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="4-3"] > img {
+  width: 600px; height: 450px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="9-16"] > img {
+  width: 600px; height: 1067px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="free"] > img {
+  width: 100%; max-width: 600px; height: auto; object-fit: initial;
+}
+/* CSS sail overlay: a brand-mark layer painted on top of the hero
+   image. The PNG sits at /static/brand/edm-sail-{en,ar}.png. The
+   overlay div carries data-sail-lang so the right asset is picked.
+   Hidden when the parent cell has data-sail="off" or data-sail="embedded"
+   (the latter means the sail is baked into the image src itself). */
+.edm-canvas .edm-sail-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  /* Match the sail to the hero image box EXACTLY — both width and height —
+     so the overlay looks identical to the baked embed (sail_composite resizes
+     the sail to the hero's pixel dims). 100% 100% maps the sail corner-to-corner
+     onto the image; `cover` would crop it. Applies at every aspect (incl. free). */
+  background-repeat: no-repeat; background-position: center; background-size: 100% 100%;
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="en"] {
+  background-image: url(images/img-06.png);
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="ar"] {
+  background-image: url(images/img-07.png);
+}
+.edm-canvas .edm-hero-img-cell[data-sail="off"] .edm-sail-overlay,
+.edm-canvas .edm-hero-img-cell[data-sail="embedded"] .edm-sail-overlay {
+  display: none;
+}
+/* Mobile responsive fit — let inner tables shrink below 600px,
+   tighten 32px gutters down to 18px, allow text to wrap. Breakpoint
+   sits BELOW 600px so the editor's 600-wide preview iframe doesn't
+   accidentally trip it. Real phones (375-414px) still hit it. */
+@media (max-width: 540px) {
+  .edm-canvas { width: 100% !important; }
+  .edm-canvas table { width: 100% !important; }
+  .edm-canvas td { padding-left: 18px !important; padding-right: 18px !important; }
+  .edm-canvas h1 { font-size: 26px !important; line-height: 1.2 !important; }
+  .edm-canvas h2 { font-size: 20px !important; }
+  /* Headers / footers with their own bleed cells get less aggressive trim */
+  .edm-canvas .edm-footer td,
+  .edm-canvas .edm-hero img { padding-left: 0 !important; padding-right: 0 !important; }
+}
+
+/* Material Icons — usable anywhere in the EDM body via
+   <span class="material-icons-outlined">trending_up</span>
+   Sizes default to 24px; override with .icon-sm/.md/.lg/.xl. */
+.material-icons,
+.material-icons-outlined,
+.material-icons-round { font-size: 24px; line-height: 1; vertical-align: middle; color: var(--ink); }
+.material-icons.icon-sm,
+.material-icons-outlined.icon-sm,
+.material-icons-round.icon-sm { font-size: 16px; }
+.material-icons.icon-md,
+.material-icons-outlined.icon-md,
+.material-icons-round.icon-md { font-size: 20px; }
+.material-icons.icon-lg,
+.material-icons-outlined.icon-lg,
+.material-icons-round.icon-lg { font-size: 32px; }
+.material-icons.icon-xl,
+.material-icons-outlined.icon-xl,
+.material-icons-round.icon-xl { font-size: 48px; }
+.icon-clay { color: var(--clay) !important; }
+.icon-clay-deep { color: var(--clay-deep) !important; }
+.icon-muted { color: var(--ink-muted) !important; }
+.icon-white { color: #FFFFFF !important; }
+.icon-moss { color: var(--moss) !important; }
+
+/* Channel meta strip — internal-only, never in the deliverable */
+.edm-meta {
+  width: 600px; max-width: 100%; margin: 0 auto 12px;
+  background: #EEF1F5; border-left: 3px solid #020A13;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  color: #1E3A6B; font-size: 13px; line-height: 1.45;
+}
+.edm-meta[data-meta-visible="false"] { display: none; }
+.edm-meta-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px 8px; border-bottom: 1px solid #D8E0EC;
+}
+.edm-meta-head .edm-meta-title {
+  font-size: 11px; font-weight: 700; color: #020A13;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-head .edm-meta-tag {
+  font-size: 10px; font-weight: 600; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-rows { padding: 8px 14px 12px; }
+.edm-meta-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 6px 0; border-bottom: 1px dashed #D8E0EC;
+}
+.edm-meta-row:last-child { border-bottom: 0; }
+.edm-meta-label {
+  flex: 0 0 96px; font-size: 11px; font-weight: 600; color: #4A5A78;
+  text-transform: uppercase; letter-spacing: 0.06em; padding-top: 2px;
+}
+.edm-meta-value {
+  flex: 1 1 auto; font-size: 13px; color: #020A13;
+  outline: none; min-height: 18px; word-break: break-word;
+}
+.edm-meta-value[data-meta-field="subject"],
+.edm-meta-value[data-meta-field="push_title"] { font-weight: 600; }
+.edm-meta-value:empty:before {
+  content: attr(data-placeholder); color: #B0BACB; font-style: italic;
+}
+.edm-meta-count {
+  flex: 0 0 auto; font-size: 11px; color: #8A95A8;
+  font-variant-numeric: tabular-nums; padding-top: 3px;
+}
+.edm-meta-count.over { color: #DC2626; font-weight: 600; }
+.edm-meta-push { display: flex; gap: 10px; flex: 1 1 auto; }
+.edm-meta-push .edm-meta-push-col { flex: 1 1 0; }
+.edm-meta-push-col-label {
+  font-size: 9px; font-weight: 700; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 2px;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="edm-meta" data-edm-meta="" data-meta-visible="true">
+</div>
+<div class="edm-canvas" id="edm">
+<table border="0" cellpadding="0" cellspacing="0" class="edm-header" role="presentation" style="background:#FFFFFF;" width="100%">
+<tbody><tr>
+</tr>
+<tr>
+<td align="left" class="" colspan="2" style="padding:18px 32px 22px;">
+<img alt="Emirates NBD" height="52" src="images/img-01.svg" style="display: block; height: 52px; width: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel">
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-hero" role="presentation" width="100%">
+<tbody><tr>
+<td class="edm-hero-img-cell" data-aspect="locked" data-sail="overlay" style="padding:0;height:340px;overflow:hidden;position:relative;">
+<img alt="The market, in full view." class="" height="340" src="images/img-02.png" style="width: 600px; height: 340px; object-fit: cover; object-position: center center; display: block; max-width: 100%; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="600">
+<div class="edm-sail-overlay" data-edm-sail="" data-sail-lang="en"></div>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:32px 32px 12px;background:#FFFFFF;">
+<h1 class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:32px;font-weight:600;line-height:1.18;letter-spacing:-0.015em;color:#020A13;">The market, in full view.</h1>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:0 32px 8px;background:#FFFFFF;">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">Dear Colleagues,</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:8px 32px 20px;background:#FFFFFF;">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">We are pleased to introduce Estate X, a real estate intelligence platform that provides a centralized view of Dubai real estate market activity. Designed for Wholesale Banking users, Estate X enables users to analyze market trends, demand patterns, pricing movements, and location-level insights through interactive dashboards and visualizations.</p>
+</td>
+</tr>
+<tr>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-body" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:0;background:#FFFFFF;">
+<!--BODY_START-->
+<!-- Intro -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr></tr>
+</tbody></table>
+<!-- Key features label -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:20px 32px 4px;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:#2765FF;font-size:20px;">Key Features</p>
+</td></tr>
+</tbody></table>
+<!--GROUP_START: Live features-->
+<!-- Market View -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:16px 32px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F7FA;border-radius:8px;" width="100%">
+<tbody><tr><td class="" style="padding:24px 24px 16px;">
+<span class="material-icons-outlined icon-lg" style="color:#020A13;">insights</span>
+<h3 class="" style="margin:12px 0 8px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:18px;font-weight:600;color:#020A13;">Market View</h3>
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#4A5A78;line-height:1.6;">A comprehensive view of UAE real estate market performance, including transaction activity, sales values and key market indicators.</p>
+</td></tr>
+<tr><td class="" style="padding:0 24px 24px;">
+<img alt="Market View dashboard" class="" src="images/img-03.png" style="width: 100%; max-width: 504px; border-radius: 6px; display: block; cursor: pointer;" title="Click to replace · open image panel" width="504">
+</td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- Demand Insights -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:16px 32px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F7FA;border-radius:8px;" width="100%">
+<tbody><tr><td class="" style="padding:24px 24px 16px;">
+<span class="material-icons-outlined icon-lg" style="color:#020A13;">groups</span>
+<h3 class="" style="margin:12px 0 8px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:18px;font-weight:600;color:#020A13;">Demand Insights</h3>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#4A5A78;line-height:1.6;">Track buyer and investor activity across locations, communities and property types to identify demand trends and emerging opportunities.</p>
+</td></tr>
+<tr><td class="" style="padding:0 24px 24px;">
+<img alt="Demand Insights dashboard" class="" src="images/img-04.png" style="width: 100%; max-width: 504px; border-radius: 6px; display: block; cursor: pointer;" title="Click to replace · open image panel" width="504">
+</td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- Pricing Analytics -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:16px 32px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F7FA;border-radius:8px;" width="100%">
+<tbody><tr><td class="" style="padding:24px 24px 16px;">
+<span class="material-icons-outlined icon-lg" style="color:#020A13;">query_stats</span>
+<h3 class="" style="margin:12px 0 8px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-weight:600;font-size:18px;color:#020A13;">Pricing Analytics</h3>
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#4A5A78;line-height:1.6;">Monitor sales and rental price trends, benchmark communities and compare market performance across locations.</p>
+</td></tr>
+<tr><td class="" style="padding:0 24px 24px;">
+<img alt="Pricing Analytics dashboard" class="" src="images/img-05.png" style="width: 100%; max-width: 504px; border-radius: 6px; display: block; cursor: pointer;" title="Click to replace · open image panel" width="504">
+</td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!--GROUP_END-->
+<!-- Coming soon band -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:24px 0 8px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#020A13;" width="100%">
+<tbody><tr><td style="padding:32px;background-color:#020A13;">
+<p class="" style="margin:0 0 20px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:22px;font-weight:600;color:#92BFFF;">Coming Soon</p>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td class="" style="padding-top:2px;" valign="top" width="32"><span class="material-icons-outlined" style="color:#92BFFF;font-size:22px;">construction</span></td>
+<td class="" valign="top">
+<h4 class="" style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:16px;font-weight:600;color:#FFFFFF;">Supply Pipeline</h4>
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#ABC4E2;line-height:1.6;">Visibility into upcoming project launches, inventory trends and future development pipelines across key markets.</p>
+</td>
+</tr>
+<tr><td class="" colspan="2" style="padding:16px 0;"><table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%"><tbody><tr><td class="" style="border-top:1px solid #143a63;font-size:0;line-height:0;">&nbsp;</td></tr></tbody></table></td></tr>
+<tr>
+<td style="padding-top:2px;" valign="top" width="32"><span class="material-icons-outlined" style="color:#92BFFF;font-size:22px;">key</span></td>
+<td class="" valign="top">
+<h4 class="" style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:16px;font-weight:600;color:#FFFFFF;">Handover Insights</h4>
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#ABC4E2;line-height:1.6;">Track upcoming project completions and handovers to better understand future market supply dynamics.</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- CTA -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr></tr>
+</tbody></table>
+<!--BODY_END-->
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-footer" role="presentation" style="background:#FFFFFF;" width="100%">
+<tbody><tr>
+<td class="" style="padding:32px 32px 40px;background:#FFFFFF;">
+
+</td>
+</tr>
+</tbody></table>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>The Best Seats Are Now Yours · Ethan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round" rel="stylesheet"/>
+<style>
+    
+:root {
+  --bg: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --ink: #072447;
+  --ink-soft: #1E3A6B;
+  --ink-muted: #4A5A78;
+  --line: #D8E0EC;
+  --clay: #1E5BB8;
+  --clay-deep: #003D7E;
+  --clay-soft: #ABC4E2;
+  --moss: #0E8A5F;
+  --serif: 'Plus Jakarta Sans', Arial, sans-serif;
+  --sans:  'Plus Jakarta Sans', Arial, sans-serif;
+}
+body { margin: 0; padding: 0; background: #f0f0f0; font-family: var(--sans); color: var(--ink); }
+.edm-canvas { width: 600px; max-width: 100%; margin: 0 auto; background: #ffffff; }
+.edm-canvas img { display: block; max-width: 100%; height: auto; border: 0; }
+.edm-canvas a { color: var(--clay); text-decoration: none; }
+
+/* Hero image box: locked aspect (600×340 cover-crop) by default. The
+   surrounding <td> is position:relative so the sail overlay can sit
+   absolutely on top. To free the aspect ratio, the editor flips the
+   <td>'s data-aspect attribute to "free" which the styles below honor. */
+.edm-canvas .edm-hero-img-cell { position: relative; padding: 0; overflow: hidden; }
+/* Default + named aspects. All cover-crop the image to fill the box;
+   the cell's height follows the img. Editor flips data-aspect to swap. */
+.edm-canvas .edm-hero-img-cell > img {
+  display: block; max-width: 100%; border: 0;
+  object-fit: cover; object-position: center;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="locked"] > img {
+  width: 600px; height: 340px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="square"] > img {
+  width: 600px; height: 600px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="16-9"] > img {
+  width: 600px; height: 338px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="4-3"] > img {
+  width: 600px; height: 450px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="9-16"] > img {
+  width: 600px; height: 1067px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="free"] > img {
+  width: 100%; max-width: 600px; height: auto; object-fit: initial;
+}
+/* CSS sail overlay: a brand-mark layer painted on top of the hero
+   image. The PNG sits at /static/brand/edm-sail-{en,ar}.png. The
+   overlay div carries data-sail-lang so the right asset is picked.
+   Hidden when the parent cell has data-sail="off" or data-sail="embedded"
+   (the latter means the sail is baked into the image src itself). */
+.edm-canvas .edm-sail-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  /* Match the sail to the hero image box EXACTLY — both width and height —
+     so the overlay looks identical to the baked embed (sail_composite resizes
+     the sail to the hero's pixel dims). 100% 100% maps the sail corner-to-corner
+     onto the image; `cover` would crop it. Applies at every aspect (incl. free). */
+  background-repeat: no-repeat; background-position: center; background-size: 100% 100%;
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="en"] {
+  background-image: url(images/img-17.png);
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="ar"] {
+  background-image: url(images/img-18.png);
+}
+.edm-canvas .edm-hero-img-cell[data-sail="off"] .edm-sail-overlay,
+.edm-canvas .edm-hero-img-cell[data-sail="embedded"] .edm-sail-overlay {
+  display: none;
+}
+/* Mobile responsive fit — let inner tables shrink below 600px,
+   tighten 32px gutters down to 18px, allow text to wrap. Breakpoint
+   sits BELOW 600px so the editor's 600-wide preview iframe doesn't
+   accidentally trip it. Real phones (375-414px) still hit it. */
+@media (max-width: 540px) {
+  .edm-canvas { width: 100% !important; }
+  .edm-canvas table { width: 100% !important; }
+  .edm-canvas td { padding-left: 18px !important; padding-right: 18px !important; }
+  .edm-canvas h1 { font-size: 26px !important; line-height: 1.2 !important; }
+  .edm-canvas h2 { font-size: 20px !important; }
+  /* Headers / footers with their own bleed cells get less aggressive trim */
+  .edm-canvas .edm-footer td,
+  .edm-canvas .edm-hero img { padding-left: 0 !important; padding-right: 0 !important; }
+}
+
+/* Material Icons — usable anywhere in the EDM body via
+   <span class="material-icons-outlined">trending_up</span>
+   Sizes default to 24px; override with .icon-sm/.md/.lg/.xl. */
+.material-icons,
+.material-icons-outlined,
+.material-icons-round { font-size: 24px; line-height: 1; vertical-align: middle; color: var(--ink); }
+.material-icons.icon-sm,
+.material-icons-outlined.icon-sm,
+.material-icons-round.icon-sm { font-size: 16px; }
+.material-icons.icon-md,
+.material-icons-outlined.icon-md,
+.material-icons-round.icon-md { font-size: 20px; }
+.material-icons.icon-lg,
+.material-icons-outlined.icon-lg,
+.material-icons-round.icon-lg { font-size: 32px; }
+.material-icons.icon-xl,
+.material-icons-outlined.icon-xl,
+.material-icons-round.icon-xl { font-size: 48px; }
+.icon-clay { color: var(--clay) !important; }
+.icon-clay-deep { color: var(--clay-deep) !important; }
+.icon-muted { color: var(--ink-muted) !important; }
+.icon-white { color: #FFFFFF !important; }
+.icon-moss { color: var(--moss) !important; }
+
+/* Channel meta strip — internal-only, never in the deliverable */
+.edm-meta {
+  width: 600px; max-width: 100%; margin: 0 auto 12px;
+  background: #EEF1F5; border-left: 3px solid #072447;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  color: #1E3A6B; font-size: 13px; line-height: 1.45;
+}
+.edm-meta[data-meta-visible="false"] { display: none; }
+.edm-meta-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px 8px; border-bottom: 1px solid #D8E0EC;
+}
+.edm-meta-head .edm-meta-title {
+  font-size: 11px; font-weight: 700; color: #072447;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-head .edm-meta-tag {
+  font-size: 10px; font-weight: 600; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-rows { padding: 8px 14px 12px; }
+.edm-meta-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 6px 0; border-bottom: 1px dashed #D8E0EC;
+}
+.edm-meta-row:last-child { border-bottom: 0; }
+.edm-meta-label {
+  flex: 0 0 96px; font-size: 11px; font-weight: 600; color: #4A5A78;
+  text-transform: uppercase; letter-spacing: 0.06em; padding-top: 2px;
+}
+.edm-meta-value {
+  flex: 1 1 auto; font-size: 13px; color: #072447;
+  outline: none; min-height: 18px; word-break: break-word;
+}
+.edm-meta-value[data-meta-field="subject"],
+.edm-meta-value[data-meta-field="push_title"] { font-weight: 600; }
+.edm-meta-value:empty:before {
+  content: attr(data-placeholder); color: #B0BACB; font-style: italic;
+}
+.edm-meta-count {
+  flex: 0 0 auto; font-size: 11px; color: #8A95A8;
+  font-variant-numeric: tabular-nums; padding-top: 3px;
+}
+.edm-meta-count.over { color: #DC2626; font-weight: 600; }
+.edm-meta-push { display: flex; gap: 10px; flex: 1 1 auto; }
+.edm-meta-push .edm-meta-push-col { flex: 1 1 0; }
+.edm-meta-push-col-label {
+  font-size: 9px; font-weight: 700; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 2px;
+}
+
+  </style>
+</head>
+<body>
+
+
+<div class="edm-meta" data-edm-meta="" data-meta-visible="true">
+<div class="edm-meta-head">
+<span class="edm-meta-title">Channel meta</span>
+<span class="edm-meta-tag">Internal · not in deliverable</span>
+</div>
+<div class="edm-meta-rows">
+<div class="edm-meta-row">
+<div class="edm-meta-label">Subject</div>
+<div class="edm-meta-value" data-meta-field="subject" data-placeholder="50 chars max — the inbox hook">The best seats are now yours.</div>
+<div class="edm-meta-count" data-meta-count-for="subject" data-meta-limit="50">29/50</div>
+</div>
+<div class="edm-meta-row">
+<div class="edm-meta-label">Descriptor</div>
+<div class="edm-meta-value" data-meta-field="descriptor" data-placeholder="110 chars — extends or completes the subject">Football, F1, tennis, golf and more — with 10% off on your Emirates NBD card.</div>
+<div class="edm-meta-count" data-meta-count-for="descriptor" data-meta-limit="110">77/110</div>
+</div>
+<div class="edm-meta-row">
+<div class="edm-meta-label">SMS</div>
+<div class="edm-meta-value" data-meta-field="sms" data-placeholder="160 chars — the offer in the customer's register">Global Sports Events is live on Lifestyle by Emirates NBD. Football, F1, tennis, golf and more — enjoy 10% off when you book with your Emirates NBD card. Take your seat.</div>
+<div class="edm-meta-count over" data-meta-count-for="sms" data-meta-limit="160">169/160</div>
+</div>
+<div class="edm-meta-row">
+<div class="edm-meta-label">Push</div>
+<div class="edm-meta-push">
+<div class="edm-meta-push-col">
+<div class="edm-meta-push-col-label">Title</div>
+<div class="edm-meta-value" data-meta-field="push_title" data-placeholder="50 chars — bold, urgent">The best seats are now yours.</div>
+</div>
+<div class="edm-meta-push-col">
+<div class="edm-meta-push-col-label">Body</div>
+<div class="edm-meta-value" data-meta-field="push_body" data-placeholder="110 chars — one line, no URLs">Global Sports Events is here. Book with your Emirates NBD card and save 10%.</div>
+</div>
+</div>
+<div class="edm-meta-count" data-meta-count-for="push_title" data-meta-limit="50">29/50</div>
+</div>
+</div>
+</div>
+<div class="edm-canvas" id="edm">
+<table border="0" cellpadding="0" cellspacing="0" class="edm-header" role="presentation" style="background:#FFFFFF;" width="100%">
+<tbody><tr>
+<td align="left" style="padding:14px 32px 0;vertical-align:top;white-space:nowrap;" width="50%">
+<span style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.3;">
+<span style="font-size:12px;vertical-align:-1px;">🔒</span>&nbsp;&nbsp;CIF: [Field: Customer CIF - Masked]
+      </span>
+</td>
+<td align="right" dir="rtl" style="padding:14px 32px 0;vertical-align:top;" width="50%">
+<span style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.3;">
+        للاطلاع على النسخة العربية، <a href="/e/the-best-seats-are-now-yours-ar" style="color:#4A5A78;text-decoration:underline;font-weight:700;">يُرجى الضغط هنا</a>
+</span>
+</td>
+</tr>
+<tr>
+<td align="left" colspan="2" style="padding:18px 32px 22px;">
+<img alt="Emirates NBD" height="52" src="images/img-01.svg" style="display: block; height: 52px; width: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel">
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-hero" role="presentation" width="100%">
+<tbody><tr>
+<td class="edm-hero-img-cell" data-aspect="locked" data-sail="overlay" style="padding:0;height:340px;overflow:hidden;position:relative;">
+<img alt="The best seats are now yours." height="340" src="images/img-02.png" style="width: 600px; height: 340px; object-fit: cover; object-position: center center; display: block; max-width: 100%; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="600">
+<div class="edm-sail-overlay" data-edm-sail="" data-sail-lang="en"></div>
+</td>
+</tr>
+<tr>
+<td style="padding:32px 32px 12px;background:#FFFFFF;">
+<p style="margin:0 0 12px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#1E5BB8;letter-spacing:0.12em;text-transform:uppercase;">LIFESTYLE BY EMIRATES NBD · GLOBAL SPORTS EVENTS</p>
+<h1 class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:32px;font-weight:600;color:#072447;line-height:1.18;letter-spacing:-0.015em;">The best seats are now yours</h1>
+</td>
+</tr>
+<tr>
+<td style="padding:0 32px 8px;background:#FFFFFF;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">Dear [First Name] [Last Name],</p>
+</td>
+</tr>
+<tr>
+<td class="" style="padding:8px 32px 20px;background:#FFFFFF;">
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">Live the moments you've been waiting for. Lifestyle by Emirates NBD brings you Global Sports Events — your gateway to some of the world's most exciting sporting events.</p>
+</td>
+</tr>
+<tr>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-body" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:0;background:#FFFFFF;">
+<!--BODY_START-->
+<!-- MODULE 1 — Intro / world of sport -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:32px 32px 8px;">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1E5BB8;">The world of sport, all in one place</p>
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.6;">Every sport you follow, now in one place. Football nights, Grand Prix weekends, championship days and courtside moments. Search the fixture, choose your seat, and enjoy the game.</p>
+</td></tr>
+</tbody></table>
+<!-- MODULE 1.5 — 10% offer box -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:16px 32px 8px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F7FA;border-radius:12px;" width="100%">
+<tbody><tr>
+<td style="padding:24px 28px;vertical-align:middle;" width="60%">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1E5BB8;">Your card advantage</p>
+<p class="" style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:16px;color:#4A5A78;line-height:1.5;">Enjoy <span style="color:#072447;font-weight:600;">10% off</span> when you book your tickets with your Emirates NBD card.&nbsp;</p>
+</td>
+<td style="padding:24px 28px;vertical-align:middle;text-align:right;" width="40%">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:52px;font-weight:600;color:#072447;line-height:1;letter-spacing:-0.02em;">10%</p>
+<p style="margin:2px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#1E5BB8;">off</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 2 — Sport category grid (3x3) -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:32px 32px 24px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_soccer</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Football</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_motorsports</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Formula 1</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_tennis</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Tennis</p>
+</td>
+</tr>
+<tr><td colspan="5" height="12"></td></tr>
+<tr>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_golf</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Golf</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">two_wheeler</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">MotoGP</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_rugby</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Rugby Union</p>
+</td>
+</tr>
+<tr><td colspan="5" height="12"></td></tr>
+<tr>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_cricket</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Cricket</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_basketball</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Basketball</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_mma</span>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">Combat Sports</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 3 — Keep an eye on what's next (full-bleed navy) -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#072447;" width="100%">
+<tbody><tr><td style="padding:36px 32px;">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#92BFFF;">Keep an eye on what's next</p>
+<h2 style="margin:0 0 28px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:22px;font-weight:600;color:#FFFFFF;letter-spacing:-0.01em;">The next big moment could be yours.</h2>
+<!-- 2x2 Tile Grid -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<!-- Football Tile -->
+<td style="width:50%;padding-right:12px;padding-bottom:24px;vertical-align:top;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td>
+<img alt="Football" height="140" src="images/img-03.jpg" style="width: 100%; height: 140px; object-fit: cover; object-position: center center; display: block; border-radius: 8px; margin-bottom: 12px; cursor: pointer;" title="Click to replace · open image panel" width="100%">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">Football</p>
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">Bayern Munich vs Dortmund</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#ABC4E2;">31 October 2026</p>
+</td></tr>
+</tbody></table>
+</td>
+<!-- Golf Tile -->
+<td style="width:50%;padding-left:12px;padding-bottom:24px;vertical-align:top;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td>
+<img alt="Golf" height="140" src="images/img-04.png" style="width: 100%; height: 140px; object-fit: cover; object-position: center center; display: block; border-radius: 8px; margin-bottom: 12px; cursor: pointer;" title="Click to replace · open image panel" width="100%">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">Golf</p>
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">DP World Tour Championship</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#ABC4E2;">1 November 2026 · Dubai</p>
+</td></tr>
+</tbody></table>
+</td>
+</tr>
+<tr>
+<!-- Tennis Tile -->
+<td style="width:50%;padding-right:12px;vertical-align:top;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td>
+<img alt="Tennis" height="140" src="images/img-05.png" style="width: 100%; height: 140px; object-fit: cover; object-position: center center; display: block; border-radius: 8px; margin-bottom: 12px; cursor: pointer;" title="Click to replace · open image panel" width="100%" class="">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">Tennis</p>
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">Davis Cup — The Final</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#ABC4E2;">29 November 2026 · Bologna</p>
+</td></tr>
+</tbody></table>
+</td>
+<!-- Formula 1 Tile -->
+<td style="width:50%;padding-left:12px;vertical-align:top;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td>
+<img alt="Formula 1" height="140" src="images/img-06.png" style="width: 100%; height: 140px; object-fit: cover; object-position: center center; display: block; border-radius: 8px; margin-bottom: 12px; cursor: pointer;" title="Click to replace · open image panel" width="100%">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">Formula 1</p>
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">Abu Dhabi Grand Prix</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#ABC4E2;">6 December 2026</p>
+</td></tr>
+</tbody></table>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 4 — Closing line + CTA -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr><td style="padding:36px 32px;text-align:center;">
+<h2 style="margin:0 0 20px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:24px;font-weight:600;color:#072447;letter-spacing:-0.01em;">One platform. Endless experiences.</h2>
+<p style="margin:0 0 24px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.6;">From personalized deals and travel offers to premium events and more, discover it all on Lifestyle by Emirates NBD.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr><td style="background:#072447;border-radius:6px;padding:15px 34px;">
+<a href="{{CTA_URL}}" style="color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;text-decoration:none;">Explore now →</a>
+</td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!--BODY_END-->
+</td>
+</tr>
+</tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-hero" dir="rtl" role="presentation" width="100%">
+<tbody><tr>
+<td class="edm-hero-img-cell" data-aspect="locked" data-sail="overlay" style="padding:0;height:340px;overflow:hidden;position:relative;">
+<img alt="أفضل المقاعد أصبحت لك الآن." class="" height="340" src="images/img-02.png" style="width: 600px; height: 340px; object-fit: cover; object-position: center center; display: block; max-width: 100%; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="600">
+<div class="edm-sail-overlay" data-edm-sail="" data-sail-lang="ar"></div>
+</td>
+</tr>
+<tr>
+<td dir="rtl" style="padding:32px 32px 12px;background:#FFFFFF;text-align:right;">
+<p class="" style="margin:0 0 12px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#1E5BB8;letter-spacing:0.12em;text-transform:uppercase;">لايف ستايل من بنك الإمارات دبي الوطني · الفعاليات الرياضية العالمية</p>
+<h1 class="" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:32px;font-weight:600;color:#072447;line-height:1.18;letter-spacing:-0.015em;">أفضل المقاعد أصبحت لك الآن</h1>
+</td>
+</tr>
+<tr>
+<td dir="rtl" style="padding:0 32px 8px;background:#FFFFFF;text-align:right;">
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">عزيزي [الاسم الأول] [اسم العائلة]،</p>
+</td>
+</tr>
+<tr>
+<td class="" dir="rtl" style="padding:8px 32px 20px;background:#FFFFFF;">
+<p class="" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">عش اللحظات التي طال انتظارك لها. يقدم إليك لايف ستايل من بنك الإمارات درس الوطني أبرز الفعاليات الرياضية العالمية، وهي منصتك إلى بعض من أكثر الفعاليات الرياضية إثارة في العالم.</p>
+</td>
+</tr>
+<tr>
+</tr>
+</tbody></table><table border="0" cellpadding="0" cellspacing="0" class="edm-body" dir="rtl" role="presentation" width="100%"><tbody><tr><td style="padding:0;background:#FFFFFF;"><!--BODY_AR_START-->
+<!-- MODULE 1 — Intro / world of sport -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:32px 32px 8px;">
+<p style="margin:0 0 6px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1E5BB8;">عالم الرياضة في مكان واحد</p>
+<p class="" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.6;">كل الأحداث الرياضية التي تفضلها في منصة واحدة. من كرة القدم إلى سباق الفورمولا 1 والبطولات الكبرى، بالإضافة إلى لحظات حصرية من الملاعب. ابحث عن المباراة المفضلة لديك، اختر مقعدك المثالي، واستمتع باللعبة.</p>
+</td></tr>
+</tbody></table>
+<!-- MODULE 1.5 — 10% offer box -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:16px 32px 8px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F7FA;border-radius:12px;" width="100%">
+<tbody><tr>
+<td style="padding:24px 28px;vertical-align:middle;" width="60%">
+<p style="margin:0 0 6px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#1E5BB8;">ميزة بطاقتك</p>
+<p class="" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:16px;color:#4A5A78;line-height:1.5;">استمتع بـ <span style="color:#072447;font-weight:600;">%10 خصم</span> عند حجز تذاكرك ببطاقة بنك الإمارات دبي الوطني الخاصة بك.</p>
+</td>
+<td style="padding:24px 28px;vertical-align:middle;text-align:left;" width="40%">
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:52px;font-weight:600;color:#072447;line-height:1;letter-spacing:-0.02em;">%10</p>
+<p style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:#1E5BB8;">خصم</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 2 — Sport category grid (3x3) -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" width="100%">
+<tbody><tr><td class="" style="padding:32px 32px 24px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_soccer</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">كرة القدم</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_motorsports</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">فورمولا 1</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_tennis</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">التنس</p>
+</td>
+</tr>
+<tr><td colspan="5" height="12"></td></tr>
+<tr>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_golf</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;" class="">الغولف</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">two_wheeler</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">موتو جي بي</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_rugby</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">الرجبي</p>
+</td>
+</tr>
+<tr><td colspan="5" height="12"></td></tr>
+<tr>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_cricket</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">كرة الكريكت</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_basketball</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">كرة السلة</p>
+</td>
+<td width="3%"></td>
+<td style="padding:12px;text-align:center;background:#F5F7FA;border-radius:8px;width:31%;">
+<span class="material-icons-outlined" style="font-size:32px;color:#072447;display:block;margin-bottom:8px;">sports_mma</span>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;font-weight:600;color:#072447;">رياضات القتال</p>
+</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 3 — Keep an eye on what's next (full-bleed navy) -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" style="background:#072447;" width="100%">
+<tbody><tr><td style="padding:32px 40px;" class="">
+<p class="" style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#92BFFF;">تابع ما هو قادم</p>
+<h2 class="" style="margin:0 0 20px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:22px;font-weight:600;color:#FFFFFF;letter-spacing:-0.01em;">اللحظة الكبرى التالية قد تكون لك.</h2>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin-bottom:24px;" width="100%">
+<tbody>
+<tr>
+<td style="padding-right:10px;padding-bottom:16px;vertical-align:top;width:50%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody>
+<tr>
+<td style="vertical-align:top;width:100%;">
+<img alt="Football" class="" height="140" src="images/img-03.jpg" style="width:100%;height:140px;object-fit:cover;object-position:center center;display:block;border-radius:4px;cursor:pointer;" title="Click to replace · open image panel" width="100%">
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top;padding-top:10px;">
+<p style="margin:0 0 3px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">كرة القدم</p>
+<p class="" style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">بايرن ميونخ ضد دورتموند</p>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:12px;color:#ABC4E2;">31 أكتوبر 2026</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td style="padding-left:10px;padding-bottom:16px;vertical-align:top;width:50%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody>
+<tr>
+<td style="vertical-align:top;width:100%;">
+<img alt="Golf" class="" height="140" src="images/img-04.png" style="width:100%;height:140px;object-fit:cover;object-position:center center;display:block;border-radius:4px;cursor:pointer;" title="Click to replace · open image panel" width="100%">
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top;padding-top:10px;">
+<p class="" style="margin:0 0 3px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">الغولف</p>
+<p class="" style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">بطولة&nbsp; موانئ دبي العالمية</p>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:12px;color:#ABC4E2;">1 نوفمبر 2026 · دبي</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td style="padding-right:10px;padding-bottom:0;vertical-align:top;width:50%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody>
+<tr>
+<td style="vertical-align:top;width:100%;">
+<img alt="Tennis" height="140" src="images/img-07.png" style="width:100%;height:140px;object-fit:cover;object-position:center center;display:block;border-radius:4px;cursor:pointer;background-image:url(images/img-19.png);background-size:cover;background-position:center;" title="Click to replace · open image panel" width="100%">
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top;padding-top:10px;">
+<p style="margin:0 0 3px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">التنس</p>
+<p class="" style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">نهائي كأس ديفيز</p>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:12px;color:#ABC4E2;">29 نوفمبر 2026 · بولونيا</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+<td style="padding-left:10px;padding-bottom:0;vertical-align:top;width:50%;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody>
+<tr>
+<td style="vertical-align:top;width:100%;">
+<img alt="Formula 1" class="" height="140" src="images/img-06.png" style="width:100%;height:140px;object-fit:cover;object-position:center center;display:block;border-radius:4px;cursor:pointer;" title="Click to replace · open image panel" width="100%">
+</td>
+</tr>
+<tr>
+<td style="vertical-align:top;padding-top:10px;">
+<p class="" style="margin:0 0 3px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:#92BFFF;">فورمولا 1</p>
+<p class="" style="margin:0 0 4px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;color:#FFFFFF;">جائزة أبوظبي الكبرى</p>
+<p class="" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:12px;color:#ABC4E2;">6 ديسمبر 2026</p>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td></tr>
+</tbody></table>
+<!-- MODULE 4 — Closing line + CTA -->
+<table border="0" cellpadding="0" cellspacing="0" dir="rtl" role="presentation" width="100%">
+<tbody><tr><td style="padding:36px 32px;text-align:center;background:linear-gradient(135deg,rgba(7,36,71,0.03) 0%,rgba(255,255,255,0.5) 100%),url('data:image/svg+xml,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 1200 400%22&gt;&lt;defs&gt;&lt;pattern id=%22lifestyle%22 x=%220%22 y=%220%22 width=%22200%22 height=%22200%22 patternUnits=%22userSpaceOnUse%22&gt;&lt;circle cx=%2250%22 cy=%2750%22 r=%2240%22 fill=%22%23072447%22 opacity=%220.04%22/&gt;&lt;circle cx=%22150%22 cy=%22150%22 r=%2235%22 fill=%22%23072447%22 opacity=%220.03%22/&gt;&lt;/pattern&gt;&lt;/defs&gt;&lt;rect fill=%22%23ffffff%22 width=%221200%22 height=%22400%22/&gt;&lt;rect fill=%22url(%23lifestyle)%22 width=%221200%22 height=%22400%22/&gt;&lt;/svg&gt;') center/cover no-repeat;">
+<h2 class="" style="margin:0 0 20px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:24px;font-weight:600;color:#072447;letter-spacing:-0.01em;">منصة واحدة. إمكانيات لا حصر لها.</h2>
+<p class="" style="margin:0 0 28px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:16px;line-height:1.5;color:#4a4a4a;">من العروض المخصصة لك و عروض السفر إلى الفعاليات المميزة وغيرها الكثير، اكتشف كل ذلك عبر منصة لايف ستايل من بنك الإمارات دبي الوطني.</p>
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr><td style="background:#072447;border-radius:6px;padding:15px 34px;">
+<a href="{{CTA_URL}}" style="color:#FFFFFF;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;font-weight:600;text-decoration:none;">استكشف الآن</a>
+</td></tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<!--BODY_AR_END--></td></tr></tbody></table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-footer" role="presentation" style="background:#FFFFFF;" width="100%">
+<!-- Be aware! Security warning (EN) -->
+<tbody><tr>
+<td style="padding:0;background:#F0F2F5;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:28px 32px 12px;vertical-align:top;" width="80%">
+<p style="margin:0 0 8px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:18px;font-weight:700;color:#072447;line-height:1.25;">Be aware!</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#1E3A6B;line-height:1.55;">In our emails, we will never ask you for confidential information or to confirm any security details such as user IDs, passwords or PINs. If you believe you received a fraudulent email, please <a href="https://www.emiratesnbd.com/report-fraud" style="color:#072447;text-decoration:underline;font-weight:600;">click here</a>.</p>
+</td>
+<td style="padding:28px 32px 12px;vertical-align:top;text-align:right;" width="20%">
+<img alt="" src="images/img-08.svg" style="display: inline-block; width: 64px; height: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="64">
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<!-- Be aware! AR -->
+<tr>
+<td style="padding:0;background:#F0F2F5;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td style="padding:12px 32px 28px;vertical-align:top;" width="20%">
+<img alt="" src="images/img-08.svg" style="display: inline-block; width: 64px; height: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel" width="64">
+</td>
+<td dir="rtl" style="padding:12px 32px 28px;vertical-align:top;text-align:right;" width="80%">
+<p style="margin:0 0 8px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:18px;font-weight:700;color:#072447;line-height:1.25;">انتبه!</p>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#1E3A6B;line-height:1.75;">في رسائلنا الإلكترونية، لن نطلب منك مطلقاً أي معلومات سرية أو أن تؤكد أي بيانات أمنية، مثل اسم المستخدم أو كلمات المرور أو رقم التعريف الشخصي (PIN). إذا كنت تعتقد أنك قد استلمت بريداً إلكترونياً احتيالياً، فيرجى <a href="https://www.emiratesnbd.com/report-fraud" style="color:#072447;text-decoration:underline;font-weight:700;">الضغط هنا</a>.</p>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<!-- Navy band starts: social row -->
+<!-- Brand-grade social SVGs at /static/brand/social/*.svg. White on
+       transparent, hand-crafted for visual uniformity (filled circles
+       with brand glyph centered). Email-client safe — pure raster. -->
+<tr>
+<td style="padding:20px 32px 14px;background:#072447;text-align:center;">
+<a href="https://facebook.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Facebook" height="36" src="images/img-09.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel">
+</a>
+<a href="https://instagram.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Instagram" height="36" src="images/img-10.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel">
+</a>
+<a href="https://twitter.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="X" height="36" src="images/img-11.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel">
+</a>
+<a href="https://linkedin.com/company/emirates-nbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="LinkedIn" height="36" src="images/img-12.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel">
+</a>
+<a href="https://youtube.com/@emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="YouTube" height="36" src="images/img-13.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel">
+</a>
+<a href="https://snapchat.com/add/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Snapchat" height="36" src="images/img-14.svg" style="height: 36px; width: auto; border: 0px; vertical-align: middle; display: inline-block; cursor: pointer;" title="Click to replace · open image panel">
+</a>
+</td>
+</tr>
+<!-- Hairline divider -->
+<tr>
+<td style="padding:0 32px;background:#072447;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%"><tbody><tr><td style="border-top:1px solid rgba(255,255,255,0.18);font-size:0;line-height:0;">&nbsp;</td></tr></tbody></table>
+</td>
+</tr>
+<!-- Callouts row: Key Facts + secondary slot -->
+<tr>
+<td style="padding:24px 32px;background:#072447;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tbody><tr>
+<td align="center" style="vertical-align:middle;text-align:center;" width="50%">
+<a href="https://www.emiratesnbd.com/en/key-facts" style="text-decoration:none;color:#FFFFFF;display:inline-block;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr>
+<td style="vertical-align:middle;padding-right:12px;">
+<img alt="" height="36" src="images/img-15.svg" style="display: block; height: 36px; width: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel">
+</td>
+<td style="vertical-align:middle;text-align:left;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;line-height:1.2;">Key Facts Statement</p>
+<p dir="rtl" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.2;">بيان الحقائق الرئيسية</p>
+</td>
+</tr>
+</tbody></table>
+</a>
+</td>
+<td align="center" style="vertical-align:middle;text-align:center;" width="50%">
+<a href="https://apps.apple.com/app/emirates-nbd" style="text-decoration:none;color:#FFFFFF;display:inline-block;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tbody><tr>
+<td style="vertical-align:middle;padding-right:12px;">
+<img alt="" height="36" src="images/img-16.svg" style="display: block; height: 36px; width: auto; border: 0px; cursor: pointer;" title="Click to replace · open image panel">
+</td>
+<td style="vertical-align:middle;text-align:left;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;line-height:1.2;">Mobile Banking App</p>
+<p dir="rtl" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.2;">تطبيق الخدمات المصرفية</p>
+</td>
+</tr>
+</tbody></table>
+</a>
+</td>
+</tr>
+</tbody></table>
+</td>
+</tr>
+<!-- Marketing opt-out (EN + AR), still on navy -->
+<tr>
+<td style="padding:24px 32px 32px;background:#072447;text-align:center;">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.55;">
+        If you want to opt in or out of our marketing communications, please visit <a href="https://www.emiratesnbd.com/commspreference" style="color:#FFFFFF;text-decoration:underline;font-weight:600;">emiratesnbd.com/commspreference</a>.
+      </p>
+<p dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.85;">
+        إذا كنت ترغب في الاشتراك أو إلغاء الاشتراك في الرسائل التسويقية، يرجى زيارة <a href="https://www.emiratesnbd.com/commspreference-ar" style="color:#FFFFFF;text-decoration:underline;font-weight:700;">emiratesnbd.com/commspreference-ar</a>.
+      </p>
+</td>
+</tr>
+<!-- Copyright — OUT of the navy band, on white -->
+<tr>
+<td style="padding:24px 32px 28px;background:#FFFFFF;text-align:center;">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.55;">
+        Copyright © 2026. Emirates NBD Bank (P.J.S.C.) is licensed by the Central Bank of the UAE.
+      </p>
+<p dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.75;">
+        حقوق النشر محفوظة © 2026. بنك الإمارات دبي الوطني (ش.م.ع.) هو بنك مرخّص من قبل مصرف الإمارات العربية المتحدة المركزي.
+      </p>
+</td>
+</tr>
+</tbody></table>
+</div>
+
+
+
+
+
+
+</body>
+</html>

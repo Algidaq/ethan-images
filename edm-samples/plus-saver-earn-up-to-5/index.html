@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Plus Saver — Earn up to 5% · Ethan</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;family=Tajawal:wght@300;400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round" rel="stylesheet"/>
+<style>
+    
+:root {
+  --bg: #F5F7FA;
+  --bg-card: #FFFFFF;
+  --ink: #072447;
+  --ink-soft: #1E3A6B;
+  --ink-muted: #4A5A78;
+  --line: #D8E0EC;
+  --clay: #1E5BB8;
+  --clay-deep: #003D7E;
+  --clay-soft: #ABC4E2;
+  --moss: #0E8A5F;
+  --serif: 'Plus Jakarta Sans', Arial, sans-serif;
+  --sans:  'Plus Jakarta Sans', Arial, sans-serif;
+}
+body { margin: 0; padding: 0; background: #f0f0f0; font-family: var(--sans); color: var(--ink); }
+.edm-canvas { width: 600px; max-width: 100%; margin: 0 auto; background: #ffffff; }
+.edm-canvas img { display: block; max-width: 100%; height: auto; border: 0; }
+.edm-canvas a { color: var(--clay); text-decoration: none; }
+
+/* Hero image box: locked aspect (600×340 cover-crop) by default. The
+   surrounding <td> is position:relative so the sail overlay can sit
+   absolutely on top. To free the aspect ratio, the editor flips the
+   <td>'s data-aspect attribute to "free" which the styles below honor. */
+.edm-canvas .edm-hero-img-cell { position: relative; padding: 0; overflow: hidden; }
+/* Default + named aspects. All cover-crop the image to fill the box;
+   the cell's height follows the img. Editor flips data-aspect to swap. */
+.edm-canvas .edm-hero-img-cell > img {
+  display: block; max-width: 100%; border: 0;
+  object-fit: cover; object-position: center;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="locked"] > img {
+  width: 600px; height: 340px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="square"] > img {
+  width: 600px; height: 600px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="16-9"] > img {
+  width: 600px; height: 338px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="4-3"] > img {
+  width: 600px; height: 450px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="9-16"] > img {
+  width: 600px; height: 1067px;
+}
+.edm-canvas .edm-hero-img-cell[data-aspect="free"] > img {
+  width: 100%; max-width: 600px; height: auto; object-fit: initial;
+}
+/* CSS sail overlay: a brand-mark layer painted on top of the hero
+   image. The PNG sits at /static/brand/edm-sail-{en,ar}.png. The
+   overlay div carries data-sail-lang so the right asset is picked.
+   Hidden when the parent cell has data-sail="off" or data-sail="embedded"
+   (the latter means the sail is baked into the image src itself). */
+.edm-canvas .edm-sail-overlay {
+  position: absolute; inset: 0; pointer-events: none;
+  /* Match the sail to the hero image box EXACTLY — both width and height —
+     so the overlay looks identical to the baked embed (sail_composite resizes
+     the sail to the hero's pixel dims). 100% 100% maps the sail corner-to-corner
+     onto the image; `cover` would crop it. Applies at every aspect (incl. free). */
+  background-repeat: no-repeat; background-position: center; background-size: 100% 100%;
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="en"] {
+  background-image: url(images/img-12.png);
+}
+.edm-canvas .edm-hero-img-cell .edm-sail-overlay[data-sail-lang="ar"] {
+  background-image: url(images/img-13.png);
+}
+.edm-canvas .edm-hero-img-cell[data-sail="off"] .edm-sail-overlay,
+.edm-canvas .edm-hero-img-cell[data-sail="embedded"] .edm-sail-overlay {
+  display: none;
+}
+/* Mobile responsive fit — let inner tables shrink below 600px,
+   tighten 32px gutters down to 18px, allow text to wrap. Breakpoint
+   sits BELOW 600px so the editor's 600-wide preview iframe doesn't
+   accidentally trip it. Real phones (375-414px) still hit it. */
+@media (max-width: 540px) {
+  .edm-canvas { width: 100% !important; }
+  .edm-canvas table { width: 100% !important; }
+  .edm-canvas td { padding-left: 18px !important; padding-right: 18px !important; }
+  .edm-canvas h1 { font-size: 26px !important; line-height: 1.2 !important; }
+  .edm-canvas h2 { font-size: 20px !important; }
+  /* Headers / footers with their own bleed cells get less aggressive trim */
+  .edm-canvas .edm-footer td,
+  .edm-canvas .edm-hero img { padding-left: 0 !important; padding-right: 0 !important; }
+}
+
+/* Material Icons — usable anywhere in the EDM body via
+   <span class="material-icons-outlined">trending_up</span>
+   Sizes default to 24px; override with .icon-sm/.md/.lg/.xl. */
+.material-icons,
+.material-icons-outlined,
+.material-icons-round { font-size: 24px; line-height: 1; vertical-align: middle; color: var(--ink); }
+.material-icons.icon-sm,
+.material-icons-outlined.icon-sm,
+.material-icons-round.icon-sm { font-size: 16px; }
+.material-icons.icon-md,
+.material-icons-outlined.icon-md,
+.material-icons-round.icon-md { font-size: 20px; }
+.material-icons.icon-lg,
+.material-icons-outlined.icon-lg,
+.material-icons-round.icon-lg { font-size: 32px; }
+.material-icons.icon-xl,
+.material-icons-outlined.icon-xl,
+.material-icons-round.icon-xl { font-size: 48px; }
+.icon-clay { color: var(--clay) !important; }
+.icon-clay-deep { color: var(--clay-deep) !important; }
+.icon-muted { color: var(--ink-muted) !important; }
+.icon-white { color: #FFFFFF !important; }
+.icon-moss { color: var(--moss) !important; }
+
+/* Channel meta strip — internal-only, never in the deliverable */
+.edm-meta {
+  width: 600px; max-width: 100%; margin: 0 auto 12px;
+  background: #EEF1F5; border-left: 3px solid #072447;
+  font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+  color: #1E3A6B; font-size: 13px; line-height: 1.45;
+}
+.edm-meta[data-meta-visible="false"] { display: none; }
+.edm-meta-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px 8px; border-bottom: 1px solid #D8E0EC;
+}
+.edm-meta-head .edm-meta-title {
+  font-size: 11px; font-weight: 700; color: #072447;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-head .edm-meta-tag {
+  font-size: 10px; font-weight: 600; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase;
+}
+.edm-meta-rows { padding: 8px 14px 12px; }
+.edm-meta-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 6px 0; border-bottom: 1px dashed #D8E0EC;
+}
+.edm-meta-row:last-child { border-bottom: 0; }
+.edm-meta-label {
+  flex: 0 0 96px; font-size: 11px; font-weight: 600; color: #4A5A78;
+  text-transform: uppercase; letter-spacing: 0.06em; padding-top: 2px;
+}
+.edm-meta-value {
+  flex: 1 1 auto; font-size: 13px; color: #072447;
+  outline: none; min-height: 18px; word-break: break-word;
+}
+.edm-meta-value[data-meta-field="subject"],
+.edm-meta-value[data-meta-field="push_title"] { font-weight: 600; }
+.edm-meta-value:empty:before {
+  content: attr(data-placeholder); color: #B0BACB; font-style: italic;
+}
+.edm-meta-count {
+  flex: 0 0 auto; font-size: 11px; color: #8A95A8;
+  font-variant-numeric: tabular-nums; padding-top: 3px;
+}
+.edm-meta-count.over { color: #DC2626; font-weight: 600; }
+.edm-meta-push { display: flex; gap: 10px; flex: 1 1 auto; }
+.edm-meta-push .edm-meta-push-col { flex: 1 1 0; }
+.edm-meta-push-col-label {
+  font-size: 9px; font-weight: 700; color: #8A95A8;
+  letter-spacing: 0.10em; text-transform: uppercase; margin-bottom: 2px;
+}
+
+  </style>
+</head>
+<body>
+<div class="edm-meta" data-edm-meta="" data-meta-visible="true">
+<div class="edm-meta-head">
+<span class="edm-meta-title">Channel meta</span>
+<span class="edm-meta-tag">Internal · not in deliverable</span>
+</div>
+<div class="edm-meta-rows">
+<div class="edm-meta-row">
+<div class="edm-meta-label">Subject</div>
+<div class="edm-meta-value" data-meta-field="subject" data-placeholder="50 chars max — the inbox hook">Your savings, rewarded — up to 5%</div>
+<div class="edm-meta-count" data-meta-count-for="subject" data-meta-limit="50">0/50</div>
+</div>
+<div class="edm-meta-row">
+<div class="edm-meta-label">Descriptor</div>
+<div class="edm-meta-value" data-meta-field="descriptor" data-placeholder="110 chars — extends or completes the subject">Open a Plus Saver account on ENBD X in four steps and earn a standard plus bonus rate.</div>
+<div class="edm-meta-count" data-meta-count-for="descriptor" data-meta-limit="110">0/110</div>
+</div>
+<div class="edm-meta-row">
+<div class="edm-meta-label">SMS</div>
+<div class="edm-meta-value" data-meta-field="sms" data-placeholder="160 chars — the offer in the customer's register">Earn up to 5% with an Emirates NBD Plus Saver account. Open in 4 steps on ENBD X and keep your balance in place. Tap to open.</div>
+<div class="edm-meta-count" data-meta-count-for="sms" data-meta-limit="160">0/160</div>
+</div>
+<div class="edm-meta-row">
+<div class="edm-meta-label">Push</div>
+<div class="edm-meta-push">
+<div class="edm-meta-push-col">
+<div class="edm-meta-push-col-label">Title</div>
+<div class="edm-meta-value" data-meta-field="push_title" data-placeholder="50 chars — bold, urgent">Earn up to 5% on your savings</div>
+</div>
+<div class="edm-meta-push-col">
+<div class="edm-meta-push-col-label">Body</div>
+<div class="edm-meta-value" data-meta-field="push_body" data-placeholder="110 chars — one line, no URLs">Open a Plus Saver account on ENBD X in four steps. Standard rate plus a bonus on new money.</div>
+</div>
+</div>
+<div class="edm-meta-count" data-meta-count-for="push_title" data-meta-limit="50">0/50</div>
+</div>
+</div>
+</div>
+<div class="edm-canvas" id="edm">
+<table border="0" cellpadding="0" cellspacing="0" class="edm-header" role="presentation" style="background:#FFFFFF;" width="100%">
+<tr>
+<td align="left" style="padding:14px 32px 0;vertical-align:top;white-space:nowrap;" width="50%">
+<span style="font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.3;">
+<span style="font-size:12px;vertical-align:-1px;">🔒</span>  CIF: [Field: Customer CIF - Masked]
+      </span>
+</td>
+<td align="right" dir="rtl" style="padding:14px 32px 0;vertical-align:top;" width="50%">
+<span style="font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.3;">
+        للاطلاع على النسخة العربية، <a href="#" style="color:#4A5A78;text-decoration:underline;font-weight:700;">يُرجى الضغط هنا</a>
+</span>
+</td>
+</tr>
+<tr>
+<td align="left" colspan="2" style="padding:18px 32px 22px;">
+<img alt="Emirates NBD" height="52" src="images/img-01.svg" style="display:block;height:52px;width:auto;border:0;"/>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-hero" role="presentation" width="100%">
+<tr>
+<td class="edm-hero-img-cell" data-aspect="locked" data-focal="89% 68%" data-sail="overlay" style="padding:0;position:relative;height:340px;overflow:hidden;">
+<img alt="Your savings, rewarded." data-crop="fill" height="340" src="images/img-02.png" style="cursor: pointer;width:600px;height:340px;object-fit:cover;object-position:center;display:block;max-width:100%;border:0;" title="Click to replace · open image panel" width="600"/>
+<div class="edm-sail-overlay" data-edm-sail="" data-sail-lang="en"></div>
+</td>
+</tr>
+<tr>
+<td style="padding:32px 32px 12px;background:#FFFFFF;">
+<p style="margin:0 0 12px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;color:#1E5BB8;letter-spacing:0.12em;text-transform:uppercase;">PLUS SAVER · EMIRATES NBD</p>
+<h1 style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:32px;font-weight:600;color:#072447;line-height:1.18;letter-spacing:-0.015em;">Your savings, rewarded.</h1>
+</td>
+</tr>
+<tr>
+<td style="padding:0 32px 8px;background:#FFFFFF;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">Dear [First Name],</p>
+</td>
+</tr>
+<tr>
+<td style="padding:8px 32px 20px;background:#FFFFFF;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.55;">Open a Plus Saver account and earn up to 5% on your balance. A standard rate on everything you save, plus a bonus rate on new money you add. Open in four steps on ENBD X and keep your balance in place through the offer period. Tap below to open yours.</p>
+</td>
+</tr>
+<tr>
+<td style="padding:0 32px 28px;background:#FFFFFF;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tr>
+<td style="background:#072447;border-radius:6px;padding:0;"><a href="{{CTA_URL}}" style="display:inline-block;padding:11px 22px;color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;text-decoration:none;letter-spacing:0.02em;">Open in ENBD X →</a></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-body" role="presentation" width="100%">
+<tr>
+<td style="padding:0;background:#FFFFFF;">
+<!--BODY_START-->
+<!-- INTRO -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:28px 32px 8px;">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;font-weight:600;">Two rates. One account.</p>
+<h2 style="margin:0 0 12px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:26px;line-height:1.2;letter-spacing:-0.01em;color:#072447;font-weight:600;">More reason to save.</h2>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:15px;color:#4A5A78;line-height:1.6;">Every dirham earns a standard rate. New money you add earns a bonus rate on top. The more you grow your balance, the more your savings work for you.</p>
+</td></tr>
+</table>
+<!-- RATE LADDER TABLE -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:16px 32px 8px;">
+<p style="margin:0 0 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;font-weight:600;">Interest earning tiers</p>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:collapse;border:1px solid #E2E8F0;border-radius:8px;overflow:hidden;" width="100%">
+<tr style="background:#072447;">
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#FFFFFF;font-weight:600;">Balance tier</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#FFFFFF;font-weight:600;text-align:center;">Standard rate</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:12px;color:#FFFFFF;font-weight:600;text-align:center;">Bonus rate</td>
+</tr>
+<tr style="background:#FFFFFF;">
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#072447;border-top:1px solid #E2E8F0;">[Tier 1 range]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;text-align:center;border-top:1px solid #E2E8F0;">[X%]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#0E8A5F;font-weight:600;text-align:center;border-top:1px solid #E2E8F0;">[X%]</td>
+</tr>
+<tr style="background:#F5F7FA;">
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#072447;border-top:1px solid #E2E8F0;">[Tier 2 range]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;text-align:center;border-top:1px solid #E2E8F0;">[X%]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#0E8A5F;font-weight:600;text-align:center;border-top:1px solid #E2E8F0;">[X%]</td>
+</tr>
+<tr style="background:#FFFFFF;">
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#072447;border-top:1px solid #E2E8F0;">[Tier 3 range]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;text-align:center;border-top:1px solid #E2E8F0;">[X%]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#0E8A5F;font-weight:600;text-align:center;border-top:1px solid #E2E8F0;">[X%]</td>
+</tr>
+<tr style="background:#F5F7FA;">
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#072447;border-top:1px solid #E2E8F0;">[Tier 4 range]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;text-align:center;border-top:1px solid #E2E8F0;">[X%]</td>
+<td style="padding:12px 14px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#0E8A5F;font-weight:600;text-align:center;border-top:1px solid #E2E8F0;">up to 5%</td>
+</tr>
+</table>
+<p style="margin:12px 0 0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;color:#4A5A78;line-height:1.5;">Standard rate applies to your entire balance. Bonus rate applies to new money added to the account. [Confirm final tier ranges and rates with product team.]</p>
+</td></tr>
+</table>
+<!-- HOW STANDARD + BONUS WORKS -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:8px 0;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#072447;" width="100%">
+<tr><td style="padding:32px;">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#92BFFF;font-weight:600;">How it adds up</p>
+<h2 style="margin:0 0 16px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:22px;line-height:1.25;color:#FFFFFF;font-weight:600;">Standard on everything. Bonus on the new.</h2>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td style="padding:0 12px 0 0;" valign="top" width="50%">
+<span class="material-icons-outlined" style="color:#92BFFF;font-size:28px;">savings</span>
+<p style="margin:8px 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;font-weight:600;">Standard rate</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.5;">Earned on your full account balance, every month.</p>
+</td>
+<td style="padding:0 0 0 12px;" valign="top" width="50%">
+<span class="material-icons-outlined" style="color:#92BFFF;font-size:28px;">trending_up</span>
+<p style="margin:8px 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;font-weight:600;">Bonus rate</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.5;">Earned on new money you add — the more you grow, the more you earn.</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+</td></tr>
+</table>
+<!-- FOUR STEPS -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:28px 32px 8px;">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#1E5BB8;font-weight:600;">Open in four steps</p>
+<h2 style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:24px;line-height:1.2;letter-spacing:-0.01em;color:#072447;font-weight:600;">All from ENBD X.</h2>
+</td></tr>
+</table>
+<!--GROUP_START: Steps-->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:8px 32px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #E2E8F0;border-radius:8px;" width="100%">
+<tr>
+<td style="padding:16px 0 16px 16px;" valign="top" width="44"><span style="display:inline-block;width:28px;height:28px;background:#072447;border-radius:50%;color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;text-align:center;line-height:28px;">1</span></td>
+<td style="padding:16px 16px 16px 8px;" valign="middle">
+<p style="margin:0 0 2px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;font-weight:600;">Log in to ENBD X</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.5;">Open the app and head to Accounts.</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:8px 32px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #E2E8F0;border-radius:8px;" width="100%">
+<tr>
+<td style="padding:16px 0 16px 16px;" valign="top" width="44"><span style="display:inline-block;width:28px;height:28px;background:#072447;border-radius:50%;color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;text-align:center;line-height:28px;">2</span></td>
+<td style="padding:16px 16px 16px 8px;" valign="middle">
+<p style="margin:0 0 2px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;font-weight:600;">Select Plus Saver</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.5;">Choose Plus Saver from the account options.</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:8px 32px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #E2E8F0;border-radius:8px;" width="100%">
+<tr>
+<td style="padding:16px 0 16px 16px;" valign="top" width="44"><span style="display:inline-block;width:28px;height:28px;background:#072447;border-radius:50%;color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;text-align:center;line-height:28px;">3</span></td>
+<td style="padding:16px 16px 16px 8px;" valign="middle">
+<p style="margin:0 0 2px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;font-weight:600;">Confirm your details</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.5;">Review the terms and confirm to open.</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:8px 32px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border:1px solid #E2E8F0;border-radius:8px;" width="100%">
+<tr>
+<td style="padding:16px 0 16px 16px;" valign="top" width="44"><span style="display:inline-block;width:28px;height:28px;background:#0E8A5F;border-radius:50%;color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;font-weight:600;text-align:center;line-height:28px;">4</span></td>
+<td style="padding:16px 16px 16px 8px;" valign="middle">
+<p style="margin:0 0 2px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;font-weight:600;">Fund and start earning</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.5;">Add funds and your savings begin working right away.</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+<!--GROUP_END-->
+<!-- KEEP THE BALANCE / VALIDITY -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:20px 32px 8px;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="background:#F5F7FA;border-radius:8px;" width="100%">
+<tr>
+<td style="padding:18px 0 18px 18px;" valign="top" width="40"><span class="material-icons-outlined" style="color:#1E5BB8;font-size:24px;">schedule</span></td>
+<td style="padding:18px 18px 18px 10px;" valign="middle">
+<p style="margin:0 0 3px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#072447;font-weight:600;">Keep your balance in place</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#4A5A78;line-height:1.5;">Maintain your account balance through the validity period to keep earning. Offer valid 1 April 2026 to 1 December 2027.</p>
+</td>
+</tr>
+</table>
+</td></tr>
+</table>
+<!-- CTA -->
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr><td style="padding:24px 32px 32px;">
+<table align="left" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tr><td style="background:#072447;border-radius:6px;padding:15px 32px;">
+<a href="{{CTA_URL}}" style="color:#FFFFFF;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;font-weight:600;text-decoration:none;">Open in ENBD X →</a>
+</td></tr>
+</table>
+</td></tr>
+</table>
+<!--BODY_END-->
+</td>
+</tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" class="edm-footer" role="presentation" style="background:#FFFFFF;" width="100%">
+<!-- Be aware! Security warning (EN) -->
+<tr>
+<td style="padding:0;background:#F0F2F5;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td style="padding:28px 32px 12px;vertical-align:top;" width="80%">
+<p style="margin:0 0 8px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:18px;font-weight:700;color:#072447;line-height:1.25;">Be aware!</p>
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#1E3A6B;line-height:1.55;">In our emails, we will never ask you for confidential information or to confirm any security details such as user IDs, passwords or PINs. If you believe you received a fraudulent email, please <a href="https://www.emiratesnbd.com/report-fraud" style="color:#072447;text-decoration:underline;font-weight:600;">click here</a>.</p>
+</td>
+<td style="padding:28px 32px 12px;vertical-align:top;text-align:right;" width="20%">
+<img alt="" src="images/img-03.svg" style="display:inline-block;width:64px;height:auto;border:0;" width="64"/>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Be aware! AR -->
+<tr>
+<td style="padding:0;background:#F0F2F5;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td style="padding:12px 32px 28px;vertical-align:top;" width="20%">
+<img alt="" src="images/img-03.svg" style="display:inline-block;width:64px;height:auto;border:0;" width="64"/>
+</td>
+<td dir="rtl" style="padding:12px 32px 28px;vertical-align:top;text-align:right;" width="80%">
+<p style="margin:0 0 8px;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:18px;font-weight:700;color:#072447;line-height:1.25;">انتبه!</p>
+<p style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:14px;color:#1E3A6B;line-height:1.75;">في رسائلنا الإلكترونية، لن نطلب منك مطلقاً أي معلومات سرية أو أن تؤكد أي بيانات أمنية، مثل اسم المستخدم أو كلمات المرور أو رقم التعريف الشخصي (PIN). إذا كنت تعتقد أنك قد استلمت بريداً إلكترونياً احتيالياً، فيرجى <a href="https://www.emiratesnbd.com/report-fraud" style="color:#072447;text-decoration:underline;font-weight:700;">الضغط هنا</a>.</p>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Navy band starts: social row -->
+<!-- Brand-grade social SVGs at /static/brand/social/*.svg. White on
+       transparent, hand-crafted for visual uniformity (filled circles
+       with brand glyph centered). Email-client safe — pure raster. -->
+<tr>
+<td style="padding:20px 32px 14px;background:#072447;text-align:center;">
+<a href="https://facebook.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Facebook" height="36" src="images/img-04.svg" style="height:36px;width:auto;border:0;vertical-align:middle;display:inline-block;"/>
+</a>
+<a href="https://instagram.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Instagram" height="36" src="images/img-05.svg" style="height:36px;width:auto;border:0;vertical-align:middle;display:inline-block;"/>
+</a>
+<a href="https://twitter.com/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="X" height="36" src="images/img-06.svg" style="height:36px;width:auto;border:0;vertical-align:middle;display:inline-block;"/>
+</a>
+<a href="https://linkedin.com/company/emirates-nbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="LinkedIn" height="36" src="images/img-07.svg" style="height:36px;width:auto;border:0;vertical-align:middle;display:inline-block;"/>
+</a>
+<a href="https://youtube.com/@emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="YouTube" height="36" src="images/img-08.svg" style="height:36px;width:auto;border:0;vertical-align:middle;display:inline-block;"/>
+</a>
+<a href="https://snapchat.com/add/emiratesnbd" style="display:inline-block;margin:0 6px;text-decoration:none;">
+<img alt="Snapchat" height="36" src="images/img-09.svg" style="height:36px;width:auto;border:0;vertical-align:middle;display:inline-block;"/>
+</a>
+</td>
+</tr>
+<!-- Hairline divider -->
+<tr>
+<td style="padding:0 32px;background:#072447;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%"><tr><td style="border-top:1px solid rgba(255,255,255,0.18);font-size:0;line-height:0;"> </td></tr></table>
+</td>
+</tr>
+<!-- Callouts row: Key Facts + secondary slot -->
+<tr>
+<td style="padding:24px 32px;background:#072447;">
+<table border="0" cellpadding="0" cellspacing="0" role="presentation" width="100%">
+<tr>
+<td align="center" style="vertical-align:middle;text-align:center;" width="50%">
+<a href="https://www.emiratesnbd.com/en/key-facts" style="text-decoration:none;color:#FFFFFF;display:inline-block;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tr>
+<td style="vertical-align:middle;padding-right:12px;">
+<img alt="" height="36" src="images/img-10.svg" style="display:block;height:36px;width:auto;border:0;"/>
+</td>
+<td style="vertical-align:middle;text-align:left;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;line-height:1.2;">Key Facts Statement</p>
+<p dir="rtl" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.2;">بيان الحقائق الرئيسية</p>
+</td>
+</tr>
+</table>
+</a>
+</td>
+<td align="center" style="vertical-align:middle;text-align:center;" width="50%">
+<a href="https://apps.apple.com/app/emirates-nbd" style="text-decoration:none;color:#FFFFFF;display:inline-block;">
+<table align="center" border="0" cellpadding="0" cellspacing="0" role="presentation">
+<tr>
+<td style="vertical-align:middle;padding-right:12px;">
+<img alt="" height="36" src="images/img-11.svg" style="display:block;height:36px;width:auto;border:0;"/>
+</td>
+<td style="vertical-align:middle;text-align:left;">
+<p style="margin:0;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:14px;color:#FFFFFF;line-height:1.2;">Mobile Banking App</p>
+<p dir="rtl" style="margin:2px 0 0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.2;">تطبيق الخدمات المصرفية</p>
+</td>
+</tr>
+</table>
+</a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<!-- Marketing opt-out (EN + AR), still on navy -->
+<tr>
+<td style="padding:24px 32px 32px;background:#072447;text-align:center;">
+<p style="margin:0 0 6px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.55;">
+        If you want to opt in or out of our marketing communications, please visit <a href="https://www.emiratesnbd.com/commspreference" style="color:#FFFFFF;text-decoration:underline;font-weight:600;">emiratesnbd.com/commspreference</a>.
+      </p>
+<p dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:13px;color:#ABC4E2;line-height:1.85;">
+        إذا كنت ترغب في الاشتراك أو إلغاء الاشتراك في الرسائل التسويقية، يرجى زيارة <a href="https://www.emiratesnbd.com/commspreference-ar" style="color:#FFFFFF;text-decoration:underline;font-weight:700;">emiratesnbd.com/commspreference-ar</a>.
+      </p>
+</td>
+</tr>
+<!-- Copyright — OUT of the navy band, on white -->
+<tr>
+<td style="padding:24px 32px 28px;background:#FFFFFF;text-align:center;">
+<p style="margin:0 0 4px;font-family:Plus Jakarta Sans,Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.55;">
+        Copyright © 2026. Emirates NBD Bank (P.J.S.C.) is licensed by the Central Bank of the UAE.
+      </p>
+<p dir="rtl" style="margin:0;font-family:'Plus Jakarta Sans','Tajawal',Arial,sans-serif;font-size:11px;color:#8A95A8;line-height:1.75;">
+        حقوق النشر محفوظة © 2026. بنك الإمارات دبي الوطني (ش.م.ع.) هو بنك مرخّص من قبل مصرف الإمارات العربية المتحدة المركزي.
+      </p>
+</td>
+</tr>
+</table>
+</div>
+</body>
+</html>
