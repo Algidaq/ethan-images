@@ -39,6 +39,33 @@ const DESCRIPTION_REPLACEMENTS = [
   [/white pill/g, "surface pill"],
 ];
 
+// The extraction endpoint returned a handful of valid fragments under the
+// wrong component codes. Keep the catalog metadata as the source of truth and
+// re-associate those fragments before producing the agnostic/component files.
+const HTML_SOURCE_BY_CODE = {
+  "I-19": "I-20",
+  "I-20": "I-19",
+  "I-23": "I-24",
+  "I-24": "I-23",
+  "I-29": "I-30",
+  "I-30": "I-29",
+  "II-13": "II-14",
+  "II-14": "II-13",
+  "II-23": "II-24",
+  "II-24": "II-25",
+  "II-25": "II-23",
+  "II-28": "II-30",
+  "II-30": "II-28",
+  "III-03": "III-04",
+  "III-04": "III-03",
+  "III-13": "III-14",
+  "III-14": "III-15",
+  "III-15": "III-13",
+  "III-23": "III-24",
+  "III-24": "III-25",
+  "III-25": "III-23",
+};
+
 const getArgValue = (name) => {
   const prefix = `--${name}=`;
   const inline = process.argv.find((arg) => arg.startsWith(prefix));
@@ -91,10 +118,13 @@ const main = async () => {
   const inputPath = getArgValue("input") ?? DEFAULT_INPUT;
   const outputPath = getArgValue("out") ?? DEFAULT_OUTPUT;
   const components = JSON.parse(await fs.readFile(inputPath, "utf8"));
+  const componentsByCode = new Map(components.map((component) => [component.code, component]));
   const agnosticComponents = components.map((component) => ({
     ...component,
     looks_like: agnosticLooksLike(component.looks_like),
-    html: toAgnosticHtml(component.html),
+    html: toAgnosticHtml(
+      componentsByCode.get(HTML_SOURCE_BY_CODE[component.code] ?? component.code).html,
+    ),
   }));
 
   await fs.mkdir(path.dirname(outputPath), { recursive: true });

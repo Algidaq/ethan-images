@@ -1,0 +1,2619 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EDM Components: Table to Div Sample</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --edm-color-surface: #ffffff;
+        --edm-color-surface-muted: #f6f8fa;
+        --edm-color-text-strong: #172033;
+        --edm-color-text: #465266;
+        --edm-color-text-muted: #7b8494;
+        --edm-color-brand: #4b5563;
+        --edm-color-brand-dark: #1f2937;
+        --edm-color-brand-light: #d9dee6;
+        --edm-color-border: #dde3ea;
+        --edm-color-on-brand: #ffffff;
+        --edm-font-family: Plus Jakarta Sans, Arial, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: #eef1f4;
+        color: #172033;
+        font-family: Inter, Arial, sans-serif;
+      }
+      body > main {
+        width: min(1440px, 100%);
+        margin: 0 auto;
+        padding: 32px 20px 56px;
+      }
+      body > main > header {
+        margin-bottom: 28px;
+      }
+      body > main > header h1 {
+        margin: 0 0 8px;
+        font-size: clamp(24px, 4vw, 36px);
+      }
+      body > main > header p {
+        max-width: 780px;
+        margin: 0;
+        color: #5f6b7a;
+        line-height: 1.55;
+      }
+      section[data-component] {
+        margin: 0 0 28px;
+        padding: 18px;
+        border: 1px solid #d7dde5;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 2px 7px rgba(15, 23, 42, 0.05);
+      }
+      section[data-component] > header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 6px 12px;
+        margin-bottom: 14px;
+      }
+      section[data-component] > header strong {
+        padding: 4px 7px;
+        border-radius: 4px;
+        background: #1f2937;
+        color: #fff;
+        font-size: 12px;
+      }
+      section[data-component] > header h2 {
+        margin: 0;
+        font-size: 17px;
+      }
+      section[data-component] > div:first-of-type {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr));
+        gap: 16px;
+      }
+      article[data-version] {
+        min-width: 0;
+      }
+      article[data-version] > h3 {
+        margin: 0 0 7px;
+        color: #667085;
+        font-size: 12px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      article[data-version] > div {
+        min-height: 100%;
+        overflow: hidden;
+        border: 1px solid #e0e5eb;
+        border-radius: 8px;
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <h1>Table → div/flex/grid sample</h1>
+        <p>
+          The first ten agnostic EDM components are shown before and after
+          conversion. The converted fragments use no classes or layout tables
+          and retain the existing theme-variable fallback chains.
+        </p>
+      </header>
+
+      <section data-component="I-01">
+        <header>
+          <strong>I-01</strong>
+          <h2>Editorial intro (lead paragraph + drop cap)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 24px 32px 24px">
+                    <p
+                      style="
+                        margin: 0;
+                        font-family: var(
+                          --edm-font-family,
+                          var(
+                            --replace-font-family,
+                            Plus Jakarta Sans,
+                            Arial,
+                            sans-serif
+                          )
+                        );
+                        font-size: 16px;
+                        color: var(
+                          --edm-color-text-strong,
+                          var(--replace-color-text-strong, #172033)
+                        );
+                        line-height: 1.6;
+                      "
+                    >
+                      <span
+                        style="
+                          float: left;
+                          font-family: var(
+                            --edm-font-family,
+                            var(
+                              --replace-font-family,
+                              Plus Jakarta Sans,
+                              Arial,
+                              sans-serif
+                            )
+                          );
+                          font-size: 48px;
+                          line-height: 0.9;
+                          font-weight: 700;
+                          color: var(
+                            --edm-color-brand-dark,
+                            var(--replace-color-brand-dark, #1f2937)
+                          );
+                          padding: 6px 10px 0 0;
+                        "
+                        >A</span
+                      >few times a year, we ship an EDM that has to do real work
+                      — explain a benefit, change behaviour, move money. This is
+                      the inventory you reach for when the brief lands at 4pm
+                      and ships at 9am.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · flex</h3>
+            <div>
+              <div
+                style="
+                  display: flex;
+                  align-items: flex-start;
+                  padding: 24px 32px;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                  color: var(
+                    --edm-color-text-strong,
+                    var(--replace-color-text-strong, #172033)
+                  );
+                "
+              >
+                <span
+                  aria-hidden="true"
+                  style="
+                    flex: 0 0 auto;
+                    padding: 6px 10px 0 0;
+                    font-size: 48px;
+                    line-height: 0.9;
+                    font-weight: 700;
+                    color: var(
+                      --edm-color-brand-dark,
+                      var(--replace-color-brand-dark, #1f2937)
+                    );
+                  "
+                  >A</span
+                >
+                <p style="margin: 0; font-size: 16px; line-height: 1.6">
+                  few times a year, we ship an EDM that has to do real work —
+                  explain a benefit, change behaviour, move money. This is the
+                  inventory you reach for when the brief lands at 4pm and ships
+                  at 9am.
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-02">
+        <header>
+          <strong>I-02</strong>
+          <h2>Section divider (eyebrow + rule line)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 24px 32px 8px">
+                    <table
+                      role="presentation"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td
+                          width="40"
+                          style="padding: 0; vertical-align: middle"
+                        >
+                          <div
+                            style="
+                              height: 2px;
+                              background: var(
+                                --edm-color-brand,
+                                var(--replace-color-brand, #4b5563)
+                              );
+                              width: 32px;
+                            "
+                          ></div>
+                        </td>
+                        <td style="padding: 0 12px; vertical-align: middle">
+                          <p
+                            style="
+                              margin: 0;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 11px;
+                              font-weight: 700;
+                              color: var(
+                                --edm-color-brand,
+                                var(--replace-color-brand, #4b5563)
+                              );
+                              letter-spacing: 0.18em;
+                              text-transform: uppercase;
+                            "
+                          >
+                            The offer
+                          </p>
+                        </td>
+                        <td style="padding: 0; vertical-align: middle">
+                          <div
+                            style="
+                              height: 1px;
+                              background: var(
+                                --edm-color-border,
+                                var(--replace-color-border, #dde3ea)
+                              );
+                              width: 100%;
+                            "
+                          ></div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · flex</h3>
+            <div>
+              <div
+                style="
+                  display: flex;
+                  align-items: center;
+                  padding: 24px 32px 8px;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                "
+              >
+                <div
+                  aria-hidden="true"
+                  style="
+                    flex: 0 0 32px;
+                    height: 2px;
+                    background: var(
+                      --edm-color-brand,
+                      var(--replace-color-brand, #4b5563)
+                    );
+                  "
+                ></div>
+                <p
+                  style="
+                    flex: 0 0 auto;
+                    margin: 0;
+                    padding: 0 12px;
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: var(
+                      --edm-color-brand,
+                      var(--replace-color-brand, #4b5563)
+                    );
+                    letter-spacing: 0.18em;
+                    text-transform: uppercase;
+                  "
+                >
+                  The offer
+                </p>
+                <div
+                  aria-hidden="true"
+                  style="
+                    flex: 1 1 auto;
+                    height: 1px;
+                    background: var(
+                      --edm-color-border,
+                      var(--replace-color-border, #dde3ea)
+                    );
+                  "
+                ></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-03">
+        <header>
+          <strong>I-03</strong>
+          <h2>Big offer headline (oversized number)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 32px 32px 8px; text-align: center">
+                    <p
+                      style="
+                        margin: 0 0 4px;
+                        font-family: var(
+                          --edm-font-family,
+                          var(
+                            --replace-font-family,
+                            Plus Jakarta Sans,
+                            Arial,
+                            sans-serif
+                          )
+                        );
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand,
+                          var(--replace-color-brand, #4b5563)
+                        );
+                        letter-spacing: 0.12em;
+                        text-transform: uppercase;
+                      "
+                    >
+                      Travel spend bonus
+                    </p>
+                    <p
+                      style="
+                        margin: 0;
+                        font-family: var(
+                          --edm-font-family,
+                          var(
+                            --replace-font-family,
+                            Plus Jakarta Sans,
+                            Arial,
+                            sans-serif
+                          )
+                        );
+                        font-size: 84px;
+                        font-weight: 800;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                        line-height: 1;
+                        letter-spacing: -0.04em;
+                      "
+                    >
+                      5x
+                    </p>
+                    <p
+                      style="
+                        margin: 8px 0 0;
+                        font-family: var(
+                          --edm-font-family,
+                          var(
+                            --replace-font-family,
+                            Plus Jakarta Sans,
+                            Arial,
+                            sans-serif
+                          )
+                        );
+                        font-size: 18px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                        line-height: 1.3;
+                      "
+                    >
+                      Skywards Miles on travel booked through August.
+                    </p>
+                    <p
+                      style="
+                        margin: 6px 0 0;
+                        font-family: var(
+                          --edm-font-family,
+                          var(
+                            --replace-font-family,
+                            Plus Jakarta Sans,
+                            Arial,
+                            sans-serif
+                          )
+                        );
+                        font-size: 13px;
+                        color: var(
+                          --edm-color-text,
+                          var(--replace-color-text, #465266)
+                        );
+                      "
+                    >
+                      Skywards Infinite &amp; Signature cardholders. Min spend
+                      AED 5,000.
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · block</h3>
+            <div>
+              <div
+                style="
+                  padding: 32px 32px 8px;
+                  text-align: center;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                "
+              >
+                <p
+                  style="
+                    margin: 0 0 4px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: var(
+                      --edm-color-brand,
+                      var(--replace-color-brand, #4b5563)
+                    );
+                    letter-spacing: 0.12em;
+                    text-transform: uppercase;
+                  "
+                >
+                  Travel spend bonus
+                </p>
+                <p
+                  style="
+                    margin: 0;
+                    font-size: 84px;
+                    font-weight: 800;
+                    color: var(
+                      --edm-color-brand-dark,
+                      var(--replace-color-brand-dark, #1f2937)
+                    );
+                    line-height: 1;
+                    letter-spacing: -0.04em;
+                  "
+                >
+                  5x
+                </p>
+                <p
+                  style="
+                    margin: 8px 0 0;
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: var(
+                      --edm-color-brand-dark,
+                      var(--replace-color-brand-dark, #1f2937)
+                    );
+                    line-height: 1.3;
+                  "
+                >
+                  Skywards Miles on travel booked through August.
+                </p>
+                <p
+                  style="
+                    margin: 6px 0 0;
+                    font-size: 13px;
+                    color: var(
+                      --edm-color-text,
+                      var(--replace-color-text, #465266)
+                    );
+                  "
+                >
+                  Skywards Infinite &amp; Signature cardholders. Min spend AED
+                  5,000.
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-04">
+        <header>
+          <strong>I-04</strong>
+          <h2>Primary CTA button (solid, on white)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 16px 32px 32px; text-align: center">
+                    <table
+                      role="presentation"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      align="center"
+                    >
+                      <tr>
+                        <td
+                          style="
+                            background: var(
+                              --edm-color-brand-dark,
+                              var(--replace-color-brand-dark, #1f2937)
+                            );
+                            border-radius: 6px;
+                            padding: 14px 32px;
+                          "
+                        >
+                          <a
+                            href="https://www.emiratesnbd.com/summer-travel"
+                            style="
+                              color: var(
+                                --edm-color-on-brand,
+                                var(--replace-color-on-brand, #ffffff)
+                              );
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 14px;
+                              font-weight: 600;
+                              text-decoration: none;
+                              letter-spacing: 0.01em;
+                            "
+                            >Register your card →</a
+                          >
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · flex</h3>
+            <div>
+              <div
+                style="
+                  display: flex;
+                  justify-content: center;
+                  padding: 16px 32px 32px;
+                "
+              >
+                <a
+                  href="https://www.emiratesnbd.com/summer-travel"
+                  style="
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 14px 32px;
+                    border-radius: 6px;
+                    background: var(
+                      --edm-color-brand-dark,
+                      var(--replace-color-brand-dark, #1f2937)
+                    );
+                    color: var(
+                      --edm-color-on-brand,
+                      var(--replace-color-on-brand, #ffffff)
+                    );
+                    font-family: var(
+                      --edm-font-family,
+                      var(
+                        --replace-font-family,
+                        Plus Jakarta Sans,
+                        Arial,
+                        sans-serif
+                      )
+                    );
+                    font-size: 14px;
+                    font-weight: 600;
+                    letter-spacing: 0.01em;
+                    text-decoration: none;
+                  "
+                  >Register your card →</a
+                >
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-05">
+        <header>
+          <strong>I-05</strong>
+          <h2>Spend-and-earn mechanic (3-step ladder)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 8px 32px 32px">
+                    <table
+                      role="presentation"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td
+                          width="33%"
+                          style="
+                            padding: 18px 8px;
+                            background: var(
+                              --edm-color-surface-muted,
+                              var(--replace-color-surface-muted, #f6f8fa)
+                            );
+                            border-radius: 8px;
+                            text-align: center;
+                            vertical-align: top;
+                          "
+                        >
+                          <p
+                            style="
+                              margin: 0 0 4px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 12px;
+                              font-weight: 600;
+                              color: var(
+                                --edm-color-text-muted,
+                                var(--replace-color-text-muted, #7b8494)
+                              );
+                              letter-spacing: 0.1em;
+                              text-transform: uppercase;
+                            "
+                          >
+                            Step 1
+                          </p>
+                          <p
+                            style="
+                              margin: 0 0 4px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 22px;
+                              font-weight: 700;
+                              color: var(
+                                --edm-color-brand-dark,
+                                var(--replace-color-brand-dark, #1f2937)
+                              );
+                              line-height: 1.1;
+                            "
+                          >
+                            Spend AED 5,000
+                          </p>
+                          <p
+                            style="
+                              margin: 0;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 12px;
+                              color: var(
+                                --edm-color-text,
+                                var(--replace-color-text, #465266)
+                              );
+                              line-height: 1.45;
+                            "
+                          >
+                            on travel between 1 Jun – 31 Aug.
+                          </p>
+                        </td>
+                        <td width="2%"></td>
+                        <td
+                          width="33%"
+                          style="
+                            padding: 18px 8px;
+                            background: var(
+                              --edm-color-surface-muted,
+                              var(--replace-color-surface-muted, #f6f8fa)
+                            );
+                            border-radius: 8px;
+                            text-align: center;
+                            vertical-align: top;
+                          "
+                        >
+                          <p
+                            style="
+                              margin: 0 0 4px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 12px;
+                              font-weight: 600;
+                              color: var(
+                                --edm-color-text-muted,
+                                var(--replace-color-text-muted, #7b8494)
+                              );
+                              letter-spacing: 0.1em;
+                              text-transform: uppercase;
+                            "
+                          >
+                            Step 2
+                          </p>
+                          <p
+                            style="
+                              margin: 0 0 4px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 22px;
+                              font-weight: 700;
+                              color: var(
+                                --edm-color-brand-dark,
+                                var(--replace-color-brand-dark, #1f2937)
+                              );
+                              line-height: 1.1;
+                            "
+                          >
+                            Earn 5x miles
+                          </p>
+                          <p
+                            style="
+                              margin: 0;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 12px;
+                              color: var(
+                                --edm-color-text,
+                                var(--replace-color-text, #465266)
+                              );
+                              line-height: 1.45;
+                            "
+                          >
+                            on every dirham spent.
+                          </p>
+                        </td>
+                        <td width="2%"></td>
+                        <td
+                          width="33%"
+                          style="
+                            padding: 18px 8px;
+                            background: var(
+                              --edm-color-surface-muted,
+                              var(--replace-color-surface-muted, #f6f8fa)
+                            );
+                            border-radius: 8px;
+                            text-align: center;
+                            vertical-align: top;
+                          "
+                        >
+                          <p
+                            style="
+                              margin: 0 0 4px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 12px;
+                              font-weight: 600;
+                              color: var(
+                                --edm-color-text-muted,
+                                var(--replace-color-text-muted, #7b8494)
+                              );
+                              letter-spacing: 0.1em;
+                              text-transform: uppercase;
+                            "
+                          >
+                            Step 3
+                          </p>
+                          <p
+                            style="
+                              margin: 0 0 4px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 22px;
+                              font-weight: 700;
+                              color: var(
+                                --edm-color-brand-dark,
+                                var(--replace-color-brand-dark, #1f2937)
+                              );
+                              line-height: 1.1;
+                            "
+                          >
+                            Fly on us
+                          </p>
+                          <p
+                            style="
+                              margin: 0;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 12px;
+                              color: var(
+                                --edm-color-text,
+                                var(--replace-color-text, #465266)
+                              );
+                              line-height: 1.45;
+                            "
+                          >
+                            redeem for any Emirates flight.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · responsive grid</h3>
+            <div>
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(min(100%, 140px), 1fr)
+                  );
+                  gap: 2%;
+                  padding: 8px 32px 32px;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                "
+              >
+                <div
+                  style="
+                    padding: 18px 8px;
+                    border-radius: 8px;
+                    background: var(
+                      --edm-color-surface-muted,
+                      var(--replace-color-surface-muted, #f6f8fa)
+                    );
+                    text-align: center;
+                  "
+                >
+                  <p
+                    style="
+                      margin: 0 0 4px;
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: var(
+                        --edm-color-text-muted,
+                        var(--replace-color-text-muted, #7b8494)
+                      );
+                      letter-spacing: 0.1em;
+                      text-transform: uppercase;
+                    "
+                  >
+                    Step 1
+                  </p>
+                  <p
+                    style="
+                      margin: 0 0 4px;
+                      font-size: 22px;
+                      font-weight: 700;
+                      color: var(
+                        --edm-color-brand-dark,
+                        var(--replace-color-brand-dark, #1f2937)
+                      );
+                      line-height: 1.1;
+                    "
+                  >
+                    Spend AED 5,000
+                  </p>
+                  <p
+                    style="
+                      margin: 0;
+                      font-size: 12px;
+                      color: var(
+                        --edm-color-text,
+                        var(--replace-color-text, #465266)
+                      );
+                      line-height: 1.45;
+                    "
+                  >
+                    on travel between 1 Jun – 31 Aug.
+                  </p>
+                </div>
+                <div
+                  style="
+                    padding: 18px 8px;
+                    border-radius: 8px;
+                    background: var(
+                      --edm-color-surface-muted,
+                      var(--replace-color-surface-muted, #f6f8fa)
+                    );
+                    text-align: center;
+                  "
+                >
+                  <p
+                    style="
+                      margin: 0 0 4px;
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: var(
+                        --edm-color-text-muted,
+                        var(--replace-color-text-muted, #7b8494)
+                      );
+                      letter-spacing: 0.1em;
+                      text-transform: uppercase;
+                    "
+                  >
+                    Step 2
+                  </p>
+                  <p
+                    style="
+                      margin: 0 0 4px;
+                      font-size: 22px;
+                      font-weight: 700;
+                      color: var(
+                        --edm-color-brand-dark,
+                        var(--replace-color-brand-dark, #1f2937)
+                      );
+                      line-height: 1.1;
+                    "
+                  >
+                    Earn 5x miles
+                  </p>
+                  <p
+                    style="
+                      margin: 0;
+                      font-size: 12px;
+                      color: var(
+                        --edm-color-text,
+                        var(--replace-color-text, #465266)
+                      );
+                      line-height: 1.45;
+                    "
+                  >
+                    on every dirham spent.
+                  </p>
+                </div>
+                <div
+                  style="
+                    padding: 18px 8px;
+                    border-radius: 8px;
+                    background: var(
+                      --edm-color-surface-muted,
+                      var(--replace-color-surface-muted, #f6f8fa)
+                    );
+                    text-align: center;
+                  "
+                >
+                  <p
+                    style="
+                      margin: 0 0 4px;
+                      font-size: 12px;
+                      font-weight: 600;
+                      color: var(
+                        --edm-color-text-muted,
+                        var(--replace-color-text-muted, #7b8494)
+                      );
+                      letter-spacing: 0.1em;
+                      text-transform: uppercase;
+                    "
+                  >
+                    Step 3
+                  </p>
+                  <p
+                    style="
+                      margin: 0 0 4px;
+                      font-size: 22px;
+                      font-weight: 700;
+                      color: var(
+                        --edm-color-brand-dark,
+                        var(--replace-color-brand-dark, #1f2937)
+                      );
+                      line-height: 1.1;
+                    "
+                  >
+                    Fly on us
+                  </p>
+                  <p
+                    style="
+                      margin: 0;
+                      font-size: 12px;
+                      color: var(
+                        --edm-color-text,
+                        var(--replace-color-text, #465266)
+                      );
+                      line-height: 1.45;
+                    "
+                  >
+                    redeem for any Emirates flight.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-06">
+        <header>
+          <strong>I-06</strong>
+          <h2>Reward tier ladder (spend X get Y)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 8px 32px 16px">
+                    <table
+                      role="presentation"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td
+                          style="
+                            padding: 18px 20px;
+                            background: var(
+                              --edm-color-surface-muted,
+                              var(--replace-color-surface-muted, #f6f8fa)
+                            );
+                            border-left: 4px solid
+                              var(
+                                --edm-color-brand-light,
+                                var(--replace-color-brand-light, #d9dee6)
+                              );
+                          "
+                        >
+                          <table role="presentation" width="100%">
+                            <tr>
+                              <td>
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-family: var(
+                                      --edm-font-family,
+                                      var(
+                                        --replace-font-family,
+                                        Plus Jakarta Sans,
+                                        Arial,
+                                        sans-serif
+                                      )
+                                    );
+                                    font-size: 13px;
+                                    font-weight: 600;
+                                    color: var(
+                                      --edm-color-brand-dark,
+                                      var(--replace-color-brand-dark, #1f2937)
+                                    );
+                                  "
+                                >
+                                  Tier 1 · Spend AED 5,000–9,999
+                                </p>
+                                <p
+                                  style="
+                                    margin: 2px 0 0;
+                                    font-family: var(
+                                      --edm-font-family,
+                                      var(
+                                        --replace-font-family,
+                                        Plus Jakarta Sans,
+                                        Arial,
+                                        sans-serif
+                                      )
+                                    );
+                                    font-size: 12px;
+                                    color: var(
+                                      --edm-color-text,
+                                      var(--replace-color-text, #465266)
+                                    );
+                                  "
+                                >
+                                  Earn 2,500 bonus miles.
+                                </p>
+                              </td>
+                              <td style="text-align: right; width: 90px">
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-family: var(
+                                      --edm-font-family,
+                                      var(
+                                        --replace-font-family,
+                                        Plus Jakarta Sans,
+                                        Arial,
+                                        sans-serif
+                                      )
+                                    );
+                                    font-size: 18px;
+                                    font-weight: 700;
+                                    color: var(
+                                      --edm-color-brand,
+                                      var(--replace-color-brand, #4b5563)
+                                    );
+                                  "
+                                >
+                                  2,500
+                                </p>
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-size: 10px;
+                                    color: var(
+                                      --edm-color-text-muted,
+                                      var(--replace-color-text-muted, #7b8494)
+                                    );
+                                    text-transform: uppercase;
+                                  "
+                                >
+                                  miles
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="height: 8px"></td>
+                      </tr>
+                      <tr>
+                        <td
+                          style="
+                            padding: 18px 20px;
+                            background: var(
+                              --edm-color-surface-muted,
+                              var(--replace-color-surface-muted, #f6f8fa)
+                            );
+                            border-left: 4px solid
+                              var(
+                                --edm-color-brand,
+                                var(--replace-color-brand, #4b5563)
+                              );
+                          "
+                        >
+                          <table role="presentation" width="100%">
+                            <tr>
+                              <td>
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-family: var(
+                                      --edm-font-family,
+                                      var(
+                                        --replace-font-family,
+                                        Plus Jakarta Sans,
+                                        Arial,
+                                        sans-serif
+                                      )
+                                    );
+                                    font-size: 13px;
+                                    font-weight: 600;
+                                    color: var(
+                                      --edm-color-brand-dark,
+                                      var(--replace-color-brand-dark, #1f2937)
+                                    );
+                                  "
+                                >
+                                  Tier 2 · Spend AED 10,000–19,999
+                                </p>
+                                <p
+                                  style="
+                                    margin: 2px 0 0;
+                                    font-size: 12px;
+                                    color: var(
+                                      --edm-color-text,
+                                      var(--replace-color-text, #465266)
+                                    );
+                                  "
+                                >
+                                  Earn 7,500 bonus miles.
+                                </p>
+                              </td>
+                              <td style="text-align: right; width: 90px">
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-size: 18px;
+                                    font-weight: 700;
+                                    color: var(
+                                      --edm-color-brand,
+                                      var(--replace-color-brand, #4b5563)
+                                    );
+                                  "
+                                >
+                                  7,500
+                                </p>
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-size: 10px;
+                                    color: var(
+                                      --edm-color-text-muted,
+                                      var(--replace-color-text-muted, #7b8494)
+                                    );
+                                    text-transform: uppercase;
+                                  "
+                                >
+                                  miles
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="height: 8px"></td>
+                      </tr>
+                      <tr>
+                        <td
+                          style="
+                            padding: 18px 20px;
+                            background: var(
+                              --edm-color-brand-dark,
+                              var(--replace-color-brand-dark, #1f2937)
+                            );
+                            border-left: 4px solid
+                              var(
+                                --edm-color-brand-light,
+                                var(--replace-color-brand-light, #d9dee6)
+                              );
+                          "
+                        >
+                          <table role="presentation" width="100%">
+                            <tr>
+                              <td>
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-family: var(
+                                      --edm-font-family,
+                                      var(
+                                        --replace-font-family,
+                                        Plus Jakarta Sans,
+                                        Arial,
+                                        sans-serif
+                                      )
+                                    );
+                                    font-size: 13px;
+                                    font-weight: 600;
+                                    color: var(
+                                      --edm-color-on-brand,
+                                      var(--replace-color-on-brand, #ffffff)
+                                    );
+                                  "
+                                >
+                                  Tier 3 · Spend AED 20,000+
+                                </p>
+                                <p
+                                  style="
+                                    margin: 2px 0 0;
+                                    font-size: 12px;
+                                    color: var(
+                                      --edm-color-brand-light,
+                                      var(--replace-color-brand-light, #d9dee6)
+                                    );
+                                  "
+                                >
+                                  Earn 20,000 bonus miles + lounge pass.
+                                </p>
+                              </td>
+                              <td style="text-align: right; width: 90px">
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-size: 18px;
+                                    font-weight: 700;
+                                    color: var(
+                                      --edm-color-brand-light,
+                                      var(--replace-color-brand-light, #d9dee6)
+                                    );
+                                  "
+                                >
+                                  20,000
+                                </p>
+                                <p
+                                  style="
+                                    margin: 0;
+                                    font-size: 10px;
+                                    color: var(
+                                      --edm-color-brand-light,
+                                      var(--replace-color-brand-light, #d9dee6)
+                                    );
+                                    text-transform: uppercase;
+                                  "
+                                >
+                                  miles
+                                </p>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · flex stack</h3>
+            <div>
+              <div
+                style="
+                  display: grid;
+                  gap: 8px;
+                  padding: 8px 32px 16px;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                "
+              >
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
+                    padding: 18px 20px;
+                    border-left: 4px solid
+                      var(
+                        --edm-color-brand-light,
+                        var(--replace-color-brand-light, #d9dee6)
+                      );
+                    background: var(
+                      --edm-color-surface-muted,
+                      var(--replace-color-surface-muted, #f6f8fa)
+                    );
+                  "
+                >
+                  <div style="flex: 1 1 220px">
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                      "
+                    >
+                      Tier 1 · Spend AED 5,000–9,999
+                    </p>
+                    <p
+                      style="
+                        margin: 2px 0 0;
+                        font-size: 12px;
+                        color: var(
+                          --edm-color-text,
+                          var(--replace-color-text, #465266)
+                        );
+                      "
+                    >
+                      Earn 2,500 bonus miles.
+                    </p>
+                  </div>
+                  <div style="flex: 0 0 90px; text-align: right">
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: var(
+                          --edm-color-brand,
+                          var(--replace-color-brand, #4b5563)
+                        );
+                      "
+                    >
+                      2,500
+                    </p>
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 10px;
+                        color: var(
+                          --edm-color-text-muted,
+                          var(--replace-color-text-muted, #7b8494)
+                        );
+                        letter-spacing: 0.08em;
+                        text-transform: uppercase;
+                      "
+                    >
+                      miles
+                    </p>
+                  </div>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
+                    padding: 18px 20px;
+                    border-left: 4px solid
+                      var(
+                        --edm-color-brand,
+                        var(--replace-color-brand, #4b5563)
+                      );
+                    background: var(
+                      --edm-color-surface-muted,
+                      var(--replace-color-surface-muted, #f6f8fa)
+                    );
+                  "
+                >
+                  <div style="flex: 1 1 220px">
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                      "
+                    >
+                      Tier 2 · Spend AED 10,000–19,999
+                    </p>
+                    <p
+                      style="
+                        margin: 2px 0 0;
+                        font-size: 12px;
+                        color: var(
+                          --edm-color-text,
+                          var(--replace-color-text, #465266)
+                        );
+                      "
+                    >
+                      Earn 7,500 bonus miles.
+                    </p>
+                  </div>
+                  <div style="flex: 0 0 90px; text-align: right">
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: var(
+                          --edm-color-brand,
+                          var(--replace-color-brand, #4b5563)
+                        );
+                      "
+                    >
+                      7,500
+                    </p>
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 10px;
+                        color: var(
+                          --edm-color-text-muted,
+                          var(--replace-color-text-muted, #7b8494)
+                        );
+                        letter-spacing: 0.08em;
+                        text-transform: uppercase;
+                      "
+                    >
+                      miles
+                    </p>
+                  </div>
+                </div>
+                <div
+                  style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 10px;
+                    padding: 18px 20px;
+                    border-left: 4px solid
+                      var(
+                        --edm-color-brand-light,
+                        var(--replace-color-brand-light, #d9dee6)
+                      );
+                    background: var(
+                      --edm-color-brand-dark,
+                      var(--replace-color-brand-dark, #1f2937)
+                    );
+                  "
+                >
+                  <div style="flex: 1 1 220px">
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-on-brand,
+                          var(--replace-color-on-brand, #ffffff)
+                        );
+                      "
+                    >
+                      Tier 3 · Spend AED 20,000+
+                    </p>
+                    <p
+                      style="
+                        margin: 2px 0 0;
+                        font-size: 12px;
+                        color: var(
+                          --edm-color-brand-light,
+                          var(--replace-color-brand-light, #d9dee6)
+                        );
+                      "
+                    >
+                      Earn 20,000 bonus miles + lounge pass.
+                    </p>
+                  </div>
+                  <div style="flex: 0 0 90px; text-align: right">
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: var(
+                          --edm-color-brand-light,
+                          var(--replace-color-brand-light, #d9dee6)
+                        );
+                      "
+                    >
+                      20,000
+                    </p>
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 10px;
+                        color: var(
+                          --edm-color-brand-light,
+                          var(--replace-color-brand-light, #d9dee6)
+                        );
+                        letter-spacing: 0.08em;
+                        text-transform: uppercase;
+                      "
+                    >
+                      miles
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-07">
+        <header>
+          <strong>I-07</strong>
+          <h2>Eligible categories grid (icon row, 4 columns)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 24px 32px 8px">
+                    <p
+                      style="
+                        margin: 0 0 16px;
+                        font-family: var(
+                          --edm-font-family,
+                          var(
+                            --replace-font-family,
+                            Plus Jakarta Sans,
+                            Arial,
+                            sans-serif
+                          )
+                        );
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                      "
+                    >
+                      Eligible spend categories
+                    </p>
+                    <table role="presentation" width="100%">
+                      <tr>
+                        <td
+                          width="25%"
+                          style="text-align: center; padding: 8px 4px"
+                        >
+                          <div
+                            style="
+                              width: 48px;
+                              height: 48px;
+                              background: var(
+                                --edm-color-surface-muted,
+                                var(--replace-color-surface-muted, #f6f8fa)
+                              );
+                              border-radius: 24px;
+                              line-height: 48px;
+                              margin: 0 auto 8px;
+                              font-size: 22px;
+                            "
+                          >
+                            ✈
+                          </div>
+                          <p style="margin: 0; font-weight: 600">Travel</p>
+                          <p style="margin: 2px 0 0; font-size: 11px">
+                            Airlines, hotels
+                          </p>
+                        </td>
+                        <td
+                          width="25%"
+                          style="text-align: center; padding: 8px 4px"
+                        >
+                          <div
+                            style="
+                              width: 48px;
+                              height: 48px;
+                              background: var(
+                                --edm-color-surface-muted,
+                                var(--replace-color-surface-muted, #f6f8fa)
+                              );
+                              border-radius: 24px;
+                              line-height: 48px;
+                              margin: 0 auto 8px;
+                              font-size: 22px;
+                            "
+                          >
+                            🍽
+                          </div>
+                          <p style="margin: 0; font-weight: 600">Dining</p>
+                          <p style="margin: 2px 0 0; font-size: 11px">
+                            Restaurants, cafés
+                          </p>
+                        </td>
+                        <td
+                          width="25%"
+                          style="text-align: center; padding: 8px 4px"
+                        >
+                          <div
+                            style="
+                              width: 48px;
+                              height: 48px;
+                              background: var(
+                                --edm-color-surface-muted,
+                                var(--replace-color-surface-muted, #f6f8fa)
+                              );
+                              border-radius: 24px;
+                              line-height: 48px;
+                              margin: 0 auto 8px;
+                              font-size: 22px;
+                            "
+                          >
+                            🛒
+                          </div>
+                          <p style="margin: 0; font-weight: 600">Groceries</p>
+                          <p style="margin: 2px 0 0; font-size: 11px">
+                            Supermarkets
+                          </p>
+                        </td>
+                        <td
+                          width="25%"
+                          style="text-align: center; padding: 8px 4px"
+                        >
+                          <div
+                            style="
+                              width: 48px;
+                              height: 48px;
+                              background: var(
+                                --edm-color-surface-muted,
+                                var(--replace-color-surface-muted, #f6f8fa)
+                              );
+                              border-radius: 24px;
+                              line-height: 48px;
+                              margin: 0 auto 8px;
+                              font-size: 22px;
+                            "
+                          >
+                            ⛽
+                          </div>
+                          <p style="margin: 0; font-weight: 600">Fuel</p>
+                          <p style="margin: 2px 0 0; font-size: 11px">
+                            UAE stations
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · responsive grid</h3>
+            <div>
+              <div
+                style="
+                  padding: 24px 32px 8px;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                "
+              >
+                <p
+                  style="
+                    margin: 0 0 16px;
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: var(
+                      --edm-color-brand-dark,
+                      var(--replace-color-brand-dark, #1f2937)
+                    );
+                    letter-spacing: 0.04em;
+                  "
+                >
+                  Eligible spend categories
+                </p>
+                <div
+                  style="
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+                    gap: 8px;
+                  "
+                >
+                  <div style="padding: 8px 4px; text-align: center">
+                    <div
+                      aria-hidden="true"
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        margin: 0 auto 8px;
+                        border-radius: 50%;
+                        background: var(
+                          --edm-color-surface-muted,
+                          var(--replace-color-surface-muted, #f6f8fa)
+                        );
+                        color: var(
+                          --edm-color-brand,
+                          var(--replace-color-brand, #4b5563)
+                        );
+                        font-size: 22px;
+                        line-height: 48px;
+                      "
+                    >
+                      ✈
+                    </div>
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                      "
+                    >
+                      Travel
+                    </p>
+                    <p
+                      style="
+                        margin: 2px 0 0;
+                        font-size: 11px;
+                        color: var(
+                          --edm-color-text-muted,
+                          var(--replace-color-text-muted, #7b8494)
+                        );
+                      "
+                    >
+                      Airlines, hotels
+                    </p>
+                  </div>
+                  <div style="padding: 8px 4px; text-align: center">
+                    <div
+                      aria-hidden="true"
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        margin: 0 auto 8px;
+                        border-radius: 50%;
+                        background: var(
+                          --edm-color-surface-muted,
+                          var(--replace-color-surface-muted, #f6f8fa)
+                        );
+                        color: var(
+                          --edm-color-brand,
+                          var(--replace-color-brand, #4b5563)
+                        );
+                        font-size: 22px;
+                        line-height: 48px;
+                      "
+                    >
+                      🍽
+                    </div>
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                      "
+                    >
+                      Dining
+                    </p>
+                    <p
+                      style="
+                        margin: 2px 0 0;
+                        font-size: 11px;
+                        color: var(
+                          --edm-color-text-muted,
+                          var(--replace-color-text-muted, #7b8494)
+                        );
+                      "
+                    >
+                      Restaurants, cafés
+                    </p>
+                  </div>
+                  <div style="padding: 8px 4px; text-align: center">
+                    <div
+                      aria-hidden="true"
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        margin: 0 auto 8px;
+                        border-radius: 50%;
+                        background: var(
+                          --edm-color-surface-muted,
+                          var(--replace-color-surface-muted, #f6f8fa)
+                        );
+                        color: var(
+                          --edm-color-brand,
+                          var(--replace-color-brand, #4b5563)
+                        );
+                        font-size: 22px;
+                        line-height: 48px;
+                      "
+                    >
+                      🛒
+                    </div>
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                      "
+                    >
+                      Groceries
+                    </p>
+                    <p
+                      style="
+                        margin: 2px 0 0;
+                        font-size: 11px;
+                        color: var(
+                          --edm-color-text-muted,
+                          var(--replace-color-text-muted, #7b8494)
+                        );
+                      "
+                    >
+                      Supermarkets
+                    </p>
+                  </div>
+                  <div style="padding: 8px 4px; text-align: center">
+                    <div
+                      aria-hidden="true"
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        margin: 0 auto 8px;
+                        border-radius: 50%;
+                        background: var(
+                          --edm-color-surface-muted,
+                          var(--replace-color-surface-muted, #f6f8fa)
+                        );
+                        color: var(
+                          --edm-color-brand,
+                          var(--replace-color-brand, #4b5563)
+                        );
+                        font-size: 22px;
+                        line-height: 48px;
+                      "
+                    >
+                      ⛽
+                    </div>
+                    <p
+                      style="
+                        margin: 0;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-brand-dark,
+                          var(--replace-color-brand-dark, #1f2937)
+                        );
+                      "
+                    >
+                      Fuel
+                    </p>
+                    <p
+                      style="
+                        margin: 2px 0 0;
+                        font-size: 11px;
+                        color: var(
+                          --edm-color-text-muted,
+                          var(--replace-color-text-muted, #7b8494)
+                        );
+                      "
+                    >
+                      UAE stations
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-08">
+        <header>
+          <strong>I-08</strong>
+          <h2>Promo code reveal block</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 24px 32px">
+                    <table
+                      role="presentation"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td
+                          style="
+                            padding: 24px;
+                            background: var(
+                              --edm-color-surface-muted,
+                              var(--replace-color-surface-muted, #f6f8fa)
+                            );
+                            border: 2px dashed
+                              var(
+                                --edm-color-brand-light,
+                                var(--replace-color-brand-light, #d9dee6)
+                              );
+                            border-radius: 10px;
+                            text-align: center;
+                          "
+                        >
+                          <p
+                            style="
+                              margin: 0 0 6px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 11px;
+                              font-weight: 600;
+                              color: var(
+                                --edm-color-text,
+                                var(--replace-color-text, #465266)
+                              );
+                              letter-spacing: 0.16em;
+                              text-transform: uppercase;
+                            "
+                          >
+                            Use this code at checkout
+                          </p>
+                          <p
+                            style="
+                              margin: 0;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 32px;
+                              font-weight: 800;
+                              color: var(
+                                --edm-color-brand-dark,
+                                var(--replace-color-brand-dark, #1f2937)
+                              );
+                              letter-spacing: 0.32em;
+                            "
+                          >
+                            SUMMER5X
+                          </p>
+                          <p
+                            style="
+                              margin: 8px 0 0;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 12px;
+                              color: var(
+                                --edm-color-text-muted,
+                                var(--replace-color-text-muted, #7b8494)
+                              );
+                            "
+                          >
+                            Valid until 31 Aug 2026 · single-use per cardholder
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · block</h3>
+            <div>
+              <div
+                style="
+                  padding: 24px 32px;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                "
+              >
+                <div
+                  style="
+                    padding: 24px;
+                    border: 2px dashed
+                      var(
+                        --edm-color-brand-light,
+                        var(--replace-color-brand-light, #d9dee6)
+                      );
+                    border-radius: 10px;
+                    background: var(
+                      --edm-color-surface-muted,
+                      var(--replace-color-surface-muted, #f6f8fa)
+                    );
+                    text-align: center;
+                  "
+                >
+                  <p
+                    style="
+                      margin: 0 0 6px;
+                      font-size: 11px;
+                      font-weight: 600;
+                      color: var(
+                        --edm-color-text,
+                        var(--replace-color-text, #465266)
+                      );
+                      letter-spacing: 0.16em;
+                      text-transform: uppercase;
+                    "
+                  >
+                    Use this code at checkout
+                  </p>
+                  <p
+                    style="
+                      overflow-wrap: anywhere;
+                      margin: 0;
+                      font-size: 32px;
+                      font-weight: 800;
+                      color: var(
+                        --edm-color-brand-dark,
+                        var(--replace-color-brand-dark, #1f2937)
+                      );
+                      letter-spacing: 0.32em;
+                    "
+                  >
+                    SUMMER5X
+                  </p>
+                  <p
+                    style="
+                      margin: 8px 0 0;
+                      font-size: 12px;
+                      color: var(
+                        --edm-color-text-muted,
+                        var(--replace-color-text-muted, #7b8494)
+                      );
+                    "
+                  >
+                    Valid until 31 Aug 2026 · single-use per cardholder
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-09">
+        <header>
+          <strong>I-09</strong>
+          <h2>Limited-time deadline banner (urgency strip)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+                style="
+                  background: var(
+                    --edm-color-brand-dark,
+                    var(--replace-color-brand-dark, #1f2937)
+                  );
+                "
+              >
+                <tr>
+                  <td style="padding: 14px 32px; text-align: center">
+                    <p
+                      style="
+                        margin: 0;
+                        font-family: var(
+                          --edm-font-family,
+                          var(
+                            --replace-font-family,
+                            Plus Jakarta Sans,
+                            Arial,
+                            sans-serif
+                          )
+                        );
+                        font-size: 13px;
+                        font-weight: 600;
+                        color: var(
+                          --edm-color-on-brand,
+                          var(--replace-color-on-brand, #ffffff)
+                        );
+                        letter-spacing: 0.04em;
+                      "
+                    >
+                      ⏱ Offer ends midnight, 31 August 2026 · UAE time
+                    </p>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · block</h3>
+            <div>
+              <div
+                style="
+                  padding: 14px 32px;
+                  background: var(
+                    --edm-color-brand-dark,
+                    var(--replace-color-brand-dark, #1f2937)
+                  );
+                  text-align: center;
+                "
+              >
+                <p
+                  style="
+                    margin: 0;
+                    font-family: var(
+                      --edm-font-family,
+                      var(
+                        --replace-font-family,
+                        Plus Jakarta Sans,
+                        Arial,
+                        sans-serif
+                      )
+                    );
+                    font-size: 13px;
+                    font-weight: 600;
+                    color: var(
+                      --edm-color-on-brand,
+                      var(--replace-color-on-brand, #ffffff)
+                    );
+                    letter-spacing: 0.04em;
+                  "
+                >
+                  ⏱ Offer ends midnight, 31 August 2026 · UAE time
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section data-component="I-10">
+        <header>
+          <strong>I-10</strong>
+          <h2>Two-column feature (image left, copy right)</h2>
+        </header>
+        <div>
+          <article data-version="before">
+            <h3>Before · table</h3>
+            <div>
+              <table
+                role="presentation"
+                cellpadding="0"
+                cellspacing="0"
+                border="0"
+                width="100%"
+              >
+                <tr>
+                  <td style="padding: 32px 32px 24px">
+                    <table
+                      role="presentation"
+                      cellpadding="0"
+                      cellspacing="0"
+                      border="0"
+                      width="100%"
+                    >
+                      <tr>
+                        <td
+                          width="240"
+                          style="vertical-align: top; padding-right: 20px"
+                        >
+                          <img
+                            src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=480&amp;h=480&amp;fit=crop"
+                            alt=""
+                            width="240"
+                            style="
+                              width: 100%;
+                              border-radius: 8px;
+                              display: block;
+                            "
+                          />
+                        </td>
+                        <td style="vertical-align: top">
+                          <p
+                            style="
+                              margin: 0 0 6px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 11px;
+                              font-weight: 600;
+                              color: var(
+                                --edm-color-brand,
+                                var(--replace-color-brand, #4b5563)
+                              );
+                              letter-spacing: 0.14em;
+                              text-transform: uppercase;
+                            "
+                          >
+                            Companion benefit
+                          </p>
+                          <h3
+                            style="
+                              margin: 0 0 8px;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 20px;
+                              font-weight: 600;
+                              color: var(
+                                --edm-color-brand-dark,
+                                var(--replace-color-brand-dark, #1f2937)
+                              );
+                              line-height: 1.2;
+                            "
+                          >
+                            Lounge access, on us.
+                          </h3>
+                          <p
+                            style="
+                              margin: 0;
+                              font-family: var(
+                                --edm-font-family,
+                                var(
+                                  --replace-font-family,
+                                  Plus Jakarta Sans,
+                                  Arial,
+                                  sans-serif
+                                )
+                              );
+                              font-size: 14px;
+                              color: var(
+                                --edm-color-text,
+                                var(--replace-color-text, #465266)
+                              );
+                              line-height: 1.5;
+                            "
+                          >
+                            Visit any of 1,300+ Marhaba and DragonPass lounges
+                            worldwide before your flight — included with every
+                            Tier 3 booking.
+                          </p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </article>
+          <article data-version="after">
+            <h3>After · responsive grid</h3>
+            <div>
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(
+                    auto-fit,
+                    minmax(min(100%, 220px), 1fr)
+                  );
+                  gap: 20px;
+                  padding: 32px 32px 24px;
+                  font-family: var(
+                    --edm-font-family,
+                    var(
+                      --replace-font-family,
+                      Plus Jakarta Sans,
+                      Arial,
+                      sans-serif
+                    )
+                  );
+                "
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?w=480&amp;h=480&amp;fit=crop"
+                  alt=""
+                  style="
+                    display: block;
+                    width: 100%;
+                    aspect-ratio: 1/1;
+                    border-radius: 8px;
+                    object-fit: cover;
+                  "
+                />
+                <div>
+                  <p
+                    style="
+                      margin: 0 0 6px;
+                      font-size: 11px;
+                      font-weight: 600;
+                      color: var(
+                        --edm-color-brand,
+                        var(--replace-color-brand, #4b5563)
+                      );
+                      letter-spacing: 0.14em;
+                      text-transform: uppercase;
+                    "
+                  >
+                    Companion benefit
+                  </p>
+                  <h3
+                    style="
+                      margin: 0 0 8px;
+                      font-size: 20px;
+                      font-weight: 600;
+                      color: var(
+                        --edm-color-brand-dark,
+                        var(--replace-color-brand-dark, #1f2937)
+                      );
+                      line-height: 1.2;
+                      letter-spacing: -0.01em;
+                    "
+                  >
+                    Lounge access, on us.
+                  </h3>
+                  <p
+                    style="
+                      margin: 0;
+                      font-size: 14px;
+                      color: var(
+                        --edm-color-text,
+                        var(--replace-color-text, #465266)
+                      );
+                      line-height: 1.5;
+                    "
+                  >
+                    Visit any of 1,300+ Marhaba and DragonPass lounges worldwide
+                    before your flight — included with every Tier 3 booking.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
